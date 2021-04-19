@@ -1,0 +1,31 @@
+{
+  "name": "codesanook-ef-note",
+  "version": "1.0.0",
+  "description": "Demo project for FE course",
+  "scripts": {
+    "dev": "webpack --mode=development",
+    "watch": "webpack --mode=development --watch",
+    "build": "webpack --progress --colors --mode=production"
+  },
+  "author": {
+    "name": "Codesanook Team"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "autoprefixer": "^9.6.0",
+    "file-loader": "^4.0.0",
+    "css-loader": "^2.1.1",
+    "mini-css-extract-plugin": "^0.7.0",
+    "node-sass": "^4.12.0",
+    "sass-loader": "^7.1.0",
+    "webpack": "4.31.0",
+    "webpack-cli": "3.3.2",
+    "precss": "^4.0.0",
+    "postcss-loader": "^3.0.0",
+    "resolve-url-loader": "^3.1.0"
+  },
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "font-awesome": "^4.7.0"
+  }
+}

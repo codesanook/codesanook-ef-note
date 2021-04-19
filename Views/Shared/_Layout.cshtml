@@ -1,0 +1,44 @@
+﻿@using Codesanook.EFNote.Controllers
+@using Codesanook.EFNote.ViewModels
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Codesanook.EFNote.MvcCoreWeb</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <div class="container">
+        <div class="primary-menu">
+            <div class="col-12">
+                <a class="btn btn-light" href="@Url.Action(nameof(NoteController.Index), "Note")" role="button">
+                    <i class="fa fa-sticky-note"></i> Notes
+                </a>
+                <a class="btn btn-light" href="@Url.Action(nameof(NotebookController.Index), "Notebook")" role="button">
+                    <i class="fa fa-book"></i> Notebooks
+                </a>
+                <a class="btn btn-light" href="@Url.Action(nameof(TagController.Index), "Tag")" role="button">
+                    <i class="fa fa-tag"></i> Tags
+                </a>
+            </div>
+        </div>
+
+        <div class="notification-bar">
+            @if (TempData[nameof(Notification.MessageKey)] != null)
+            {
+                <div class="alert alert-danger notification" role="alert">
+                    @TempData[nameof(Notification.MessageKey)]
+                </div>
+            }
+        </div>
+
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

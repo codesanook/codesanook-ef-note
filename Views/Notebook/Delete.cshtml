@@ -1,0 +1,24 @@
+﻿@using Codesanook.EFNote.Models
+@model Notebook
+@{
+    ViewData["Title"] = "Notebook - delete";
+}
+
+<div class="main-panel">
+    <div col-12>
+        @using (Html.BeginForm())
+        {
+            <div class="form-group">
+                <div class="alert alert-info" role="alert">
+                    <i class="fa fa-info"></i>
+                    Are you sure you want to delete notebook @Model.Name with its @Model.Notes.Count notes?
+                </div>
+            </div>
+            <div class="form-group text-right">
+                <button type="submit" class="btn btn-light">
+                    <i class="fa fa-check"></i> Yes
+                </button>
+            </div>
+        }
+    </div>
+</div>
