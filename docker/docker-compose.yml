@@ -1,7 +1,23 @@
 version: "3.8"
 
 services:
-  mysql:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: core-mvc
+    volumes:
+      - ./../:/app # ./app on local map to /app in the container
+    ports:
+      - "8000:80"
+    environment:
+      #ConnectionStrings__DefaultConnection: "${ConnectionString:?err}"
+      ConnectionStrings__DefaultConnection: "Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;"
+    depends_on:
+      - db
+    networks:
+      - compose_network
+  db:
     image: mysql:5.7
     restart: always
     environment:
@@ -29,10 +45,7 @@ services:
       # Use a custom MySQL configuration file
       - ./config:/etc/mysql/conf.d
     command:
-      [
-        --character-set-server=utf8mb4,
-        --collation-server=utf8mb4_unicode_ci,
-      ]
+      [--character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
     networks:
       - compose_network
 

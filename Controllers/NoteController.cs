@@ -29,7 +29,6 @@ namespace Codesanook.EFNote.Controllers
         }
 
         public const string ErrorMessageKey = "errorMessage";
-
         public IActionResult Index(int? selectedNotebookId, int? selectedNoteId)
         {
             var allNotebooks = this.notebookRepository.List().ToList();
