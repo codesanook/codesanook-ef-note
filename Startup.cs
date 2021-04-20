@@ -26,7 +26,8 @@ namespace Codesanook.EFNote
                 .AddSessionStateTempDataProvider();
 
             //EF context objects should be scoped for a per-request lifetime.
-            services.AddDbContext<NoteDbContext>(option => {
+            services.AddDbContext<NoteDbContext>(option =>
+            {
                 option
                     .UseMySQL(Configuration.GetConnectionString("DefaultConnection"))
                     .UseSnakeCaseNamingConvention();
@@ -53,6 +54,12 @@ namespace Codesanook.EFNote
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            using (var serviceScope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            {
+                var context = serviceScope.ServiceProvider.GetRequiredService<NoteDbContext>();
+                context.Database.Migrate();
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -74,7 +81,8 @@ namespace Codesanook.EFNote
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Note}/{action=Index}/{id?}"
+                );
             });
         }
     }
