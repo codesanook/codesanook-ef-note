@@ -7,7 +7,7 @@ $ git clone git@github.com:codesanook/Codesanook.EFNote.git
 ```
 - CD to to the root folder.
 ``
-$ cd Codesanook.EFNote.git
+$ cd Codesanook.EFNote
 ``
 - Launch Docker containers.
 ```
@@ -43,7 +43,7 @@ web_1  | watch : Started
 
 ## Release compose
 ``` 
-docker compose down --volumes; docker-compose -f docker-compose.yml -f docker-compose.release.yml up --build
+$ docker compose down --volumes; docker-compose -f docker-compose.yml -f docker-compose.release.yml up --build
 ```
 
 ## TODO
