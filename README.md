@@ -11,7 +11,7 @@ $ cd Codesanook.EFNote.git
 ``
 - Launch Docker containers.
 ```
-$ docker-compose up
+$ docker compose down --volumes; docker-compose up --build
 ```
 - Wait for a while until you see dotnet watch messages, e.g.
 ```
