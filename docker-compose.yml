@@ -7,7 +7,7 @@ services:
       dockerfile: Dockerfile
     image: core-mvc
     volumes:
-      - ./../:/app # ./app on local map to /app in the container
+      - ./app:/app # ./app on local map to /app in the container
     ports:
       - "8000:80"
     environment:
@@ -41,7 +41,7 @@ services:
       - mysql-logs:/var/log/mysql
 
       # Map all files in init folder as initialize database files
-      - ./init:/docker-entrypoint-initdb.d
+      - ./init-database.sql:/docker-entrypoint-initdb.d/init-database.sql
 
       # Use a custom MySQL configuration file
       - ./config:/etc/mysql/conf.d

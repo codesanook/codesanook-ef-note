@@ -1,8 +1,8 @@
-const path = require("path");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const entryFile = [__dirname, "src", "css", "site"];
-const outputPath = [__dirname, "wwwroot", "css"];
+const entryFile = [__dirname, 'css', 'site'];
+const outputPath = [__dirname, 'wwwroot', 'css'];
 
 module.exports = {
   entry: {
@@ -10,10 +10,10 @@ module.exports = {
   },
   output: {
     path: path.resolve(...outputPath),
-    filename: "_[name].css"
+    filename: '_[name].css'
   },
   resolve: {
-    extensions: [".scss"]
+    extensions: ['.scss']
   },
   module: {
     rules: [
@@ -24,22 +24,22 @@ module.exports = {
             loader: MiniCssExtractPlugin.loader
           },
           {
-            loader: "css-loader" // translates CSS into CommonJS modules
+            loader: 'css-loader' // translates CSS into CommonJS modules
           },
           {
-            loader: "postcss-loader", // Run post css actions
+            loader: 'postcss-loader', // Run post css actions
             options: {
               plugins: () => {
                 // post css plugins, can be exported to postcss.config.js
-                return [require("precss"), require("autoprefixer")];
+                return [require('precss'), require('autoprefixer')];
               }
             }
           },
           {
-            loader: "resolve-url-loader"
+            loader: 'resolve-url-loader'
           },
           {
-            loader: "sass-loader", // compiles Sass to CSS, using Node Sass by default
+            loader: 'sass-loader', // compiles Sass to CSS, using Node Sass by default
             options: {
               sourceMap: true
             }
@@ -51,10 +51,10 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg|eot|ttf|woff2?)$/,
         use: [
           {
-            loader: "file-loader",
+            loader: 'file-loader',
             options: {
-              name: "[name].[ext]",
-              outputPath: "." //relative to output
+              name: '[name].[ext]',
+              outputPath: '.' // Relative to output
             }
           }
         ]
@@ -63,7 +63,7 @@ module.exports = {
   },
   plugins: [
     new MiniCssExtractPlugin({
-      filename: "./site.css" //relative to output
+      filename: './site.css' // Relative to output
     })
   ]
 };
