@@ -281,4 +281,5 @@ README.html
 
 wwwroot/*
 !wwwroot/lib
+!wwwroot/css
 !wwwroot/favicon.ico
