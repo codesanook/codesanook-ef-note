@@ -1,13 +1,13 @@
-# Codesanook.EFNote
+# codesanook-ef-note
 
 ## How to run the project locally
 - Clone the project to your computer.
 ```
-$ git clone git@github.com:codesanook/Codesanook.EFNote.git
+$ git clone git@github.com:codesanook/codesanook-ef-note.git
 ```
 - CD to to the root folder.
 ``
-$ cd Codesanook.EFNote
+$ cd codesanook-ef-note
 ``
 - Launch Docker containers.
 ```

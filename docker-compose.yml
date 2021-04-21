@@ -14,8 +14,6 @@ services:
     environment:
       ConnectionStrings__DefaultConnection: "Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;"
       ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_AUTO_RELOAD_WS_ENDPOINT: ws://127.0.0.1:41149
-      ASPNETCORE_URLS: http://*:80 
     depends_on:
       - db
     networks:
@@ -26,7 +24,6 @@ services:
     environment:
       # TODO move password to a secret file
       MYSQL_ROOT_PASSWORD: MySQL1234!
-
       # Set permission of this user in "set-database-permission.sql"
       MYSQL_USER: sa
       MYSQL_PASSWORD: "#5SR^Yz4!3N4jRE@"
