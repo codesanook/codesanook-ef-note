@@ -40,3 +40,14 @@ web_1  | watch : Started
 ## EF Note in a browser 
 
 ![ef-note-animated-screenshot.gif](ef-note-animated-screenshot.gif)
+
+## Release compose
+``` 
+docker compose down --volumes; docker-compose -f docker-compose.yml -f docker-compose.release.yml up --build
+```
+
+## TODO
+- [ ] wrong count number
+- [ ] Can't delete notebook
+- [ ] Refactor repository
+- [ ] Remove cookie warning

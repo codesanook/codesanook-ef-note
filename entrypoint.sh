@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 set -e # -e  Exit immediately if a command exits with a non-zero status.
 
@@ -15,4 +15,4 @@ done
 dotnet --version
 echo "$ASPNETCORE_AUTO_RELOAD_WS_ENDPOINT"
 
-dotnet watch run --urls http://*:80 --verbose --no-launch-profile
+dotnet watch run --verbose --no-launch-profile
