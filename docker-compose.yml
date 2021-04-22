@@ -7,14 +7,15 @@ services:
       dockerfile: Dockerfile
       target: base
     image: codesanook-ef-note:latest
-    volumes:
-      - ./app:/app # ./app on local map to /app in the container
-    ports:
-      - "8000:8000"
-    environment:
-      ConnectionStrings__DefaultConnection: "Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;"
     depends_on:
       - db
+    environment:
+      ConnectionStrings__DefaultConnection: Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;
+      ASPNETCORE_URLS: http://*:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app # ./app on local host is mapped to /app in the container
     networks:
       - compose_network
   db:

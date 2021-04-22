@@ -17,9 +17,10 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o /publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS release
+ENV ASPNETCORE_URLS http://*:8000
 EXPOSE 8000
+
 COPY --from=builder /publish /dist
 WORKDIR /dist
-ENV ASPNETCORE_URLS http://*:8000
 
 ENTRYPOINT ["/bin/bash", "-c" , "sleep 10 && dotnet Codesanook.EFNote.dll"]
