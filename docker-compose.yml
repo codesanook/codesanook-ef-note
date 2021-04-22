@@ -13,7 +13,8 @@ services:
       - "8000:80"
     environment:
       ConnectionStrings__DefaultConnection: "Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;"
-      ASPNETCORE_ENVIRONMENT: Development
+      #ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://*:80"
     depends_on:
       - db
     networks:

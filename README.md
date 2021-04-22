@@ -1,20 +1,24 @@
 # codesanook-ef-note
 
 ## How to run the project locally
+
 - Clone the project to your computer.
 ```
-$ git clone git@github.com:codesanook/codesanook-ef-note.git
+git clone git@github.com:codesanook/codesanook-ef-note.git
 ```
+
 - CD to to the root folder.
 ``
-$ cd codesanook-ef-note
+cd codesanook-ef-note
 ``
+
 - Launch Docker containers.
+```sh
+docker compose down --volumes; docker-compose up --build
 ```
-$ docker compose down --volumes; docker-compose up --build
-```
+
 - Wait for a while until you see dotnet watch messages, e.g.
-```
+```sh
 web_1  | watch : Process id 384 ran for 579ms
 web_1  | watch : Watching 80 file(s) for changes
 web_1  | watch : Watch command can be configured to use --no-restore.
@@ -43,7 +47,7 @@ web_1  | watch : Started
 
 ## Release compose
 ``` 
-$ docker compose down --volumes; docker-compose -f docker-compose.yml -f docker-compose.release.yml up --build
+docker compose down --volumes; docker-compose -f docker-compose.yml -f docker-compose.release.yml up --build
 ```
 
 ## TODO
