@@ -24,13 +24,12 @@ namespace Codesanook.EFNote
                 .AddControllersWithViews()
                 .AddSessionStateTempDataProvider();
 
-            //EF context objects should be scoped for a per-request lifetime.
+            // EF context objects should be scoped for a per-request lifetime.
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<NoteDbContext>(option =>
             {
                 option
                     .UseMySQL(connectionString)
-                    //.UseLazyLoadingProxies()
                     .UseSnakeCaseNamingConvention();
             });
 
