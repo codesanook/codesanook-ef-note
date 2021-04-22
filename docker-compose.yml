@@ -10,7 +10,7 @@ services:
     depends_on:
       - db
     environment:
-      ConnectionStrings__DefaultConnection: Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;
+      ConnectionStrings__DefaultConnection: Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;CharSet=utf8mb4;
       ASPNETCORE_URLS: http://*:8000
     ports:
       - "8000:8000"

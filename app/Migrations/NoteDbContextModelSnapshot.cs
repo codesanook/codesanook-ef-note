@@ -63,6 +63,10 @@ namespace Codesanook.EFNote.Migrations
                         .HasDatabaseName("ix_note_notebook_id");
 
                     b.ToTable("note");
+
+                    b
+                        .HasAnnotation("MySQL:Charset", "utf8mb4")
+                        .HasAnnotation("MySQL:Collation", "utf8mb4_unicode_ci");
                 });
 
             modelBuilder.Entity("Codesanook.EFNote.Models.Notebook", b =>
@@ -82,6 +86,10 @@ namespace Codesanook.EFNote.Migrations
                         .HasName("pk_notebook");
 
                     b.ToTable("notebook");
+
+                    b
+                        .HasAnnotation("MySQL:Charset", "utf8mb4")
+                        .HasAnnotation("MySQL:Collation", "utf8mb4_unicode_ci");
                 });
 
             modelBuilder.Entity("Codesanook.EFNote.Models.Tag", b =>
@@ -101,6 +109,10 @@ namespace Codesanook.EFNote.Migrations
                         .HasName("pk_tag");
 
                     b.ToTable("tag");
+
+                    b
+                        .HasAnnotation("MySQL:Charset", "utf8mb4")
+                        .HasAnnotation("MySQL:Collation", "utf8mb4_unicode_ci");
                 });
 
             modelBuilder.Entity("NoteTag", b =>
