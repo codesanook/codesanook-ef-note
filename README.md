@@ -3,12 +3,12 @@
 ## How to run the project locally
 
 - Clone the project to your computer.
-```
+```sh
 git clone git@github.com:codesanook/codesanook-ef-note.git
 ```
 
 - CD to to the root folder.
-``
+``sh
 cd codesanook-ef-note
 ``
 
@@ -31,10 +31,10 @@ web_1  | watch : Started
 ```
 - Open a browser and navigate to http://localhost:8000/
 - You will find a simple note app that you can 
-    - Add a new notebook which is a group/container of each note  
-    - Add a new note.
-    - Add a new tag.
-    - Update/Delete notebook, note and tag.
+  - Add a new notebook which is a group/container of each note  
+  - Add a new note.
+  - Add a new tag.
+  - Update/Delete notebook, note and tag.
 
 ## Hot reload
 - Edit some C# source code in `app` folder. 
@@ -42,29 +42,32 @@ web_1  | watch : Started
 - Refresh a browser and see what you have changed.
 
 ## EF Note in a browser 
-
 ![ef-note-animated-screenshot.gif](ef-note-animated-screenshot.gif)
 
 ## Release compose for testing only
-``` 
+```sh
 docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-compose.release.yml up --build
 ```
 
 ## Production release
 - Create Azure App Service with a container mcr.microsoft.com/dotnet/samples:aspnetapp
-- Set up this secrets
-- Push to main branch
+- Create a public DockerHub repository
+- Set up these secrets
+  - AZURE_WEBAPP_CONTAINER_PUBLISH_PROFILE
+  - AZURE_WEBAPP_NAME
+  - DOCKERHUB_REPOSITORY
+  - DOCKERHUB_TOKEN
+  - DOCKERHUB_USERNAME
+- Push the project to the main branch
 
 
-# Create a database 
+## Debugging
+- CD to `app` folder and launch run with debugging with VS Code `.NET Core launch (web)`
+- Start only a database  container
+```sh
+docker-compose up db
 ```
-create database `codesanook-ef-note`;
-```
-
-# Debugging
- docker-compose up db
 
 ## TODO
-- [ ] Remove cookie warning
 - [ ] Improve code quality
 - [ ] Use async/await
