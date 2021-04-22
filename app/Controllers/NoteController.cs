@@ -5,7 +5,6 @@ using System.Linq;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using Codesanook.EFNote.Repositories;
 using Codesanook.EFNote.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,30 +12,19 @@ namespace Codesanook.EFNote.Controllers
 {
     public class NoteController : Controller
     {
-        private readonly IRepository<Note> noteRepository;
-        private readonly IRepository<Notebook> notebookRepository;
-        private readonly IRepository<Tag> tagRepository;
+        private readonly NoteDbContext dbContext;
 
-        public NoteController(
-            IRepository<Note> noteRepository,
-            IRepository<Notebook> notebookRepository,
-            IRepository<Tag> tagRepository
-        )
-        {
-            this.noteRepository = noteRepository;
-            this.notebookRepository = notebookRepository;
-            this.tagRepository = tagRepository;
-        }
+        public NoteController(NoteDbContext dbContext) => this.dbContext = dbContext;
 
         public const string ErrorMessageKey = "errorMessage";
         public IActionResult Index(int? selectedNotebookId, int? selectedNoteId)
         {
-            var allNotebooks = this.notebookRepository.List().ToList();
+            var allNotebooks = dbContext.Notebooks.ToList();
             var selectedNotebook = allNotebooks.SingleOrDefault(b => b.Id == selectedNotebookId);
 
-            var allNotesForSelectedNotebook = noteRepository.List()
+            var allNotesForSelectedNotebook = dbContext.Notes
                 .Where(n => n.Notebook.Id == selectedNotebookId)
-                .Include(n => n.Tags)
+                .Include(n => n.Tags) // Eger loading
                 .AsEnumerable()
                 .Select(n => new NoteViewModel()
                 {
@@ -67,10 +55,10 @@ namespace Codesanook.EFNote.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            var allNotebooks = notebookRepository.List().ToList();
+            var allNotebooks = dbContext.Notebooks.ToList();
             var selectedNotebook = allNotebooks.SingleOrDefault(b => b.Id == selectedNotebookId);
 
-            var allNotesForSelectedNotebook = noteRepository.List()
+            var allNotesForSelectedNotebook = dbContext.Notes
                 .Where(n => n.Notebook.Id == selectedNotebookId)
                 .Include(n => n.Tags)
                 .AsEnumerable()
@@ -105,17 +93,20 @@ namespace Codesanook.EFNote.Controllers
                 Tags = allTags
             };
 
-            noteRepository.Add(note);
+            dbContext.Notes.Add(note);
+            dbContext.SaveChanges();
             return RedirectToIndex(note);
         }
 
         [HttpPost]
         public IActionResult Edit(int id, [Bind(Prefix = "SelectedNote")] NoteViewModel viewModel)
         {
-            var allTags = GetAllTags(viewModel.Tags);
-            var existingNote = noteRepository.GetById(id);
-            var newTagsToAdd = allTags.Except(existingNote.Tags, new TagComparer()).ToList();
-            var existingTagsToRemove = existingNote.Tags.Except(allTags, new TagComparer()).ToList();
+            var existingNote = dbContext.Notes.Include(n => n.Tags).Single(n => n.Id == id);
+            var existingTags = existingNote.Tags.ToList();
+
+            var allTagsFromInput = GetAllTags(viewModel.Tags);
+            var newTagsToAdd = allTagsFromInput.Except(existingTags, new TagComparer()).ToList();
+            var existingTagsToRemove = existingTags.Except(allTagsFromInput, new TagComparer()).ToList();
             foreach (var tag in newTagsToAdd)
             {
                 existingNote.Tags.Add(tag);
@@ -128,8 +119,9 @@ namespace Codesanook.EFNote.Controllers
 
             existingNote.Title = viewModel.Title;
             existingNote.Content = viewModel.Content;
-            existingNote.NotebookId = viewModel.NotebookId;//update notebook
-            noteRepository.Update(existingNote);
+            existingNote.NotebookId = viewModel.NotebookId; // update Notebook of the current note
+
+            dbContext.SaveChanges();
             return RedirectToIndex(existingNote);
         }
 
@@ -139,7 +131,7 @@ namespace Codesanook.EFNote.Controllers
                 ? Array.Empty<string>()
                 : tagNamesValue.ToLower()?.Split(",", StringSplitOptions.RemoveEmptyEntries).Select(t => t.Trim());
 
-            var existingTags = tagRepository.List().Where(t => tagNames.Contains(t.Name)).ToList();
+            var existingTags = dbContext.Tags.Where(t => tagNames.Contains(t.Name)).ToList();
             var newTags = tagNames.Select(t => new Tag() { Name = t }).Except(existingTags, new TagComparer());
             var allTags = existingTags.Concat(newTags).ToList();
             return allTags;
@@ -162,20 +154,21 @@ namespace Codesanook.EFNote.Controllers
 
         public IActionResult Delete(int id)
         {
-            var note = noteRepository.GetById(id);
+            var note = dbContext.Notes.Find(id);
             return View(note);
         }
 
         [HttpPost]
         public IActionResult Delete(int id, IFormCollection _)
         {
-            var note = noteRepository.GetById(id);
-            foreach (var tag in note.Tags.ToList())
+            var note = dbContext.Notes.Include(n=> n.Tags).Single(n=>n.Id == id);
+            foreach (var tag in note.Tags)
             {
                 note.Tags.Remove(tag);
             }
 
-            noteRepository.Remove(note);
+            dbContext.Notes.Remove(note);
+            dbContext.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
     }

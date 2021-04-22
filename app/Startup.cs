@@ -1,6 +1,5 @@
 using System;
 using Codesanook.EFNote.Models;
-using Codesanook.EFNote.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -26,16 +25,14 @@ namespace Codesanook.EFNote
                 .AddSessionStateTempDataProvider();
 
             //EF context objects should be scoped for a per-request lifetime.
+            var connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<NoteDbContext>(option =>
             {
                 option
-                    .UseMySQL(Configuration.GetConnectionString("DefaultConnection"))
+                    .UseMySQL(connectionString)
+                    //.UseLazyLoadingProxies()
                     .UseSnakeCaseNamingConvention();
             });
-
-            //Register generic
-            //https://ardalis.com/registering-open-generics-in-aspnet-core-dependency-injection
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddDistributedMemoryCache();
             services.AddSession(options =>

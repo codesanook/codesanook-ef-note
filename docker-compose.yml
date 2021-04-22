@@ -10,11 +10,9 @@ services:
     volumes:
       - ./app:/app # ./app on local map to /app in the container
     ports:
-      - "8000:80"
+      - "8000:8000"
     environment:
       ConnectionStrings__DefaultConnection: "Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;"
-      #ASPNETCORE_ENVIRONMENT: Development
-      ASPNETCORE_URLS: http://*:80"
     depends_on:
       - db
     networks:

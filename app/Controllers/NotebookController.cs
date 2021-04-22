@@ -1,85 +1,89 @@
 ﻿using Codesanook.EFNote.Models;
-using Codesanook.EFNote.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 
 namespace Codesanook.EFNote.Controllers
 {
     public class NotebookController : Controller
     {
-        private readonly IRepository<Notebook> notebookRepository;
-        private readonly IRepository<Note> noteRepository;
+        private NoteDbContext dbContext;
 
-        public NotebookController(
-            IRepository<Notebook> notebookRepository,
-            IRepository<Note> noteRepository
-            )
-        {
-            this.notebookRepository = notebookRepository;
-            this.noteRepository = noteRepository;
-        }
+        public NotebookController(NoteDbContext dbContext) => this.dbContext = dbContext;
 
         public IActionResult Index()
         {
-            var notebooks = notebookRepository.List().OrderBy(b=>b.Name).ToList();
+            var notebooks = dbContext.Notebooks
+                .Include(b => b.Notes)
+                .OrderBy(b => b.Name)
+                .ToList();
             return View(notebooks);
         }
 
         public IActionResult Create() => View();
 
         [HttpPost]
-        public IActionResult Create(Notebook model)
+        public IActionResult Create(Notebook notebook)
         {
-            model.Name = model.Name.Trim();
-            notebookRepository.Add(model);
+            notebook.Name = notebook.Name.Trim();
+            dbContext.Notebooks.Add(notebook);
+            dbContext.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Edit(int id)
         {
-            var notebook = notebookRepository.GetById(id);
+            var notebook = dbContext.Notebooks.Find(id);
             return View(notebook);
         }
 
         [HttpPost]
-        public IActionResult Edit(int id, Notebook model)
+        public IActionResult Edit(int id, Notebook notebook)
         {
-            model.Name = model.Name.Trim();
-            var existingNotebook = notebookRepository.GetById(id);
-            existingNotebook.Name = model.Name;
-            notebookRepository.Update(existingNotebook);
+            notebook.Name = notebook.Name.Trim();
+            var existingNotebook = dbContext.Notebooks.Find(id);
+            existingNotebook.Name = notebook.Name;
+            dbContext.SaveChanges();
+
             return RedirectToAction(nameof(Index));
         }
 
         public IActionResult Delete(int id)
         {
-            var notebook = notebookRepository.GetById(id);
+            var notebook = dbContext.Notebooks.Include(b => b.Notes).Single(b => b.Id == id);
             return View(notebook);
         }
 
         [HttpPost]
         public IActionResult Delete(int id, IFormCollection _)
         {
-            var notebook = notebookRepository.GetById(id);
+            var notebook = dbContext.Notebooks
+                .Include(b => b.Notes)
+                .ThenInclude(n => n.Tags)
+                .Single(b => b.Id == id);
             var notes = notebook.Notes;
 
-            var noteAndItsTag = 
+            var noteAndItsTag =
                 from note in notes
                 from tag in note.Tags
                 select (note, tag);
 
-            foreach (var (note, tag) in noteAndItsTag.ToList())
+            // Remove tag from note 
+            foreach (var (note, tag) in noteAndItsTag)
             {
                 note.Tags.Remove(tag);
             }
 
-            foreach(var note in notebook.Notes.ToList())
+            // Remove note
+            foreach (var note in notebook.Notes)
             {
-                noteRepository.Remove(note);
+                dbContext.Notes.Remove(note);
             }
 
-            notebookRepository.Remove(notebook);
+            // Remote notebook
+            dbContext.Notebooks.Remove(notebook);
+            dbContext.SaveChanges();
             return RedirectToAction(nameof(Index));
         }
     }

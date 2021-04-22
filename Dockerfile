@@ -17,6 +17,7 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o /publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS release
+EXPOSE 8000
 COPY --from=builder /publish /dist
 WORKDIR /dist
 

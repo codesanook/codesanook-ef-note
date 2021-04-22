@@ -12,6 +12,7 @@ namespace Codesanook.EFNote
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    webBuilder.UseUrls("http://*:8000");
                 });
     }
 }

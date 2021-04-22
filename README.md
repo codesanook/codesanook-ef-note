@@ -61,8 +61,10 @@ docker compose down --volumes; docker-compose -f docker-compose.yml -f docker-co
 create database `codesanook-ef-note`;
 ```
 
+# Debugging
+ docker-compose up db
+
 ## TODO
-- [ ] wrong count number
-- [ ] Can't delete notebook
-- [ ] Refactor repository
 - [ ] Remove cookie warning
+- [ ] Improve code quality
+- [ ] Use async/await
