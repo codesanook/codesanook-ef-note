@@ -109,6 +109,7 @@ namespace Codesanook.EFNote.Controllers
             return RedirectToIndex(note);
         }
 
+        [HttpPost]
         public IActionResult Edit(int id, [Bind(Prefix = "SelectedNote")] NoteViewModel viewModel)
         {
             var allTags = GetAllTags(viewModel.Tags);
