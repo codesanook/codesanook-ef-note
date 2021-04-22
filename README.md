@@ -14,7 +14,7 @@ cd codesanook-ef-note
 
 - Launch Docker containers.
 ```sh
-docker compose down --volumes; docker-compose up --build
+docker-compose down --volumes; docker-compose up --build
 ```
 
 - Wait for a while until you see dotnet watch messages, e.g.
@@ -47,11 +47,11 @@ web_1  | watch : Started
 
 ## Release compose for testing only
 ``` 
-docker compose down --volumes; docker-compose -f docker-compose.yml -f docker-compose.release.yml up --build
+docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-compose.release.yml up --build
 ```
 
 ## Production release
-- Create Azure App Service with a container mcr.microsoft.com/dotnet/samples:aspnetapp and command  -p 80:80
+- Create Azure App Service with a container mcr.microsoft.com/dotnet/samples:aspnetapp
 - Set up this secrets
 - Push to main branch
 

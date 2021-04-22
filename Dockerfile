@@ -20,5 +20,6 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS release
 EXPOSE 8000
 COPY --from=builder /publish /dist
 WORKDIR /dist
+ENV ASPNETCORE_URLS http://*:8000
 
-ENTRYPOINT [ "dotnet",  "Codesanook.EFNote.dll"]
+ENTRYPOINT ["/bin/bash", "-c" , "sleep 10 && dotnet Codesanook.EFNote.dll"]
