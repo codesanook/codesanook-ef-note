@@ -1,0 +1,42 @@
+name: Deploy ASP.NET Core MVC to Azure App Service Linux Container
+
+on:
+  push:
+    branches:
+      - main
+env:
+ DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${{ github.sha }}
+
+jobs:
+  build:
+    # https://www.dotnetthailand.com/programming-cookbook/github-actions/github-actions-fundamentals#findmorevirtualenvironments
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the latest source code from {{ github.ref }}
+        uses: actions/checkout@v2
+ 
+      # https://github.com/docker/login-action/releases
+      - name: Login to Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      # https://docs.docker.com/docker-hub/
+      - name: Build and push a custom image
+        run: |
+          docker build --tag ${{ env.DOCKER_IMAGE_NAME }} --target release .
+          docker push ${{ env.DOCKER_IMAGE_NAME }}
+
+      # Before downloading load publish profile, make sure that you have set WEBSITE_WEBDEPLOY_USE_SCM
+      # in App Service Configuration to true
+      # configure port number 
+      # https://docs.microsoft.com/en-us/azure/app-service/configure-custom-container?pivots=container-linux#configure-port-number
+      # WEBSITES_PORT
+      # connection string
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_CONTAINER_PUBLISH_PROFILE }}
+          images: ${{ env.DOCKER_IMAGE_NAME }}

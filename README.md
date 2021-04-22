@@ -45,9 +45,20 @@ web_1  | watch : Started
 
 ![ef-note-animated-screenshot.gif](ef-note-animated-screenshot.gif)
 
-## Release compose
+## Release compose for testing only
 ``` 
 docker compose down --volumes; docker-compose -f docker-compose.yml -f docker-compose.release.yml up --build
+```
+
+## Production release
+- Create Azure App Service with a container mcr.microsoft.com/dotnet/samples:aspnetapp and command  -p 80:80
+- Set up this secrets
+- Push to main branch
+
+
+# Create a database 
+```
+create database `codesanook-ef-note`;
 ```
 
 ## TODO

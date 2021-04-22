@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
       target: base
-    image: core-mvc:latest
+    image: codesanook-ef-note:latest
     volumes:
       - ./app:/app # ./app on local map to /app in the container
     ports:

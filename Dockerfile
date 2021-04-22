@@ -20,6 +20,4 @@ FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS release
 COPY --from=builder /publish /dist
 WORKDIR /dist
 
-COPY ./entrypoint.release.sh /
-RUN chmod +x /entrypoint.release.sh
-ENTRYPOINT ["/entrypoint.release.sh"]
+ENTRYPOINT [ "dotnet",  "Codesanook.EFNote.dll"]
