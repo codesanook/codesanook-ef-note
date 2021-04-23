@@ -9,9 +9,10 @@ git clone git@github.com:{your-github-username}/codesanook-ef-note.git
 !!! Change **{your-github-username}** to your GitHub username
 
 - CD to to the root folder.
-``sh
+
+```sh
 cd codesanook-ef-note
-``
+```
 
 - Launch Docker containers.
 ```sh
@@ -20,15 +21,8 @@ docker-compose down --volumes; docker-compose up --build
 
 - Wait for a while until you see dotnet watch messages, e.g.
 ```sh
-web_1  | watch : Process id 384 ran for 579ms
-web_1  | watch : Watching 80 file(s) for changes
-web_1  | watch : Watch command can be configured to use --no-restore.
-web_1  | watch : No restore arguments: run --no-restore --urls http://*:80 --no-launch-profile
-web_1  | watch : dotnet-watch is configured to launch a browser on ASP.NET Core application startup.
-web_1  | watch : Refresh server running at ws://127.0.0.1:43557.
-web_1  | watch : Started '/usr/share/dotnet/dotnet' 'run --urls http://*:80 --no-launch-profile' with process id 431
-web_1  | watch : Running dotnet with the following arguments: run --urls http://*:80 --no-launch-profile
-web_1  | watch : Started
+web_1  | info: Microsoft.Hosting.Lifetime[0]
+web_1  |       Now listening on: http://[::]:8000
 ```
 - Open a browser and navigate to http://localhost:8000/
 - You will find a simple note app that you can 
@@ -51,16 +45,40 @@ docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-co
 ```
 
 ## Production release
-- Create Azure App Service with a container mcr.microsoft.com/dotnet/samples:aspnetapp
+
+### Create a new App Service
+- Create Azure App Service with a container
+- Use DockerHub registry and `mcr.microsoft.com/dotnet/samples:aspnetapp` image
+- Check log in deployment, open a browser and navigate to https://{your-app-service-name}.azurewebsites.net/
+- You should find an example ASP.NET Core MVC app 
+
+### Set some configurations 
+- Set these configurations:
+  - `WEBSITE_WEBDEPLOY_USE_SCM` 
+    - `true`
+  - `WEBSITES_PORT` 
+    - `8000`
+  - `WEBSITES_PORT` 
+    - `true`
+  - `CONNECTIONSTRINGS__DEFAULTCONNECTION` 
+    - `Server={your-server-name}.mysql.database.azure.com; Port=3306; Database={your-database-name}; Uid={your-username}@{your-server-name}; Pwd={your-password}; SslMode=Preferred;CharSet=utf8mb4;`
+
+### Create DockerHub repository and get a new token
 - Create a public DockerHub repository
-- Set up these secrets
+- Get DockerHub token from Account Settings > Security > New Access Token
+
+### Create GitHub secret
+- Download publish profile from your App Service and use it a value of AZURE_WEBAPP_CONTAINER_PUBLISH_PROFILE secret
+- Create these GitHub secrets with their values:
   - AZURE_WEBAPP_CONTAINER_PUBLISH_PROFILE
   - AZURE_WEBAPP_NAME
   - DOCKERHUB_REPOSITORY
   - DOCKERHUB_TOKEN
   - DOCKERHUB_USERNAME
-- Push the project to the main branch
 
+### Trigger GitHub Actions
+- Go to GitHub Action tab and enable it
+- Create new commit and push the project to the main branch
 
 ## Debugging
 - CD to `app` folder and launch run with debugging with VS Code `.NET Core launch (web)`

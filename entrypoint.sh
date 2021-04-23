@@ -7,11 +7,8 @@ export PATH="$PATH:/root/.dotnet/tools"
 
 until dotnet ef database update --verbose; do
 echo "MySQL is starting up"
-sleep 5 # number of seconds
+sleep 1 # Number of seconds
 done
-
 echo "MySQL is up"
-
-echo "$ASPNETCORE_AUTO_RELOAD_WS_ENDPOINT"
 
 dotnet watch run --verbose --no-launch-profile
