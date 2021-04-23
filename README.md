@@ -1,11 +1,12 @@
 # codesanook-ef-note
 
 ## How to run the project locally
-
+- Fork this project
 - Clone the project to your computer.
 ```sh
-git clone git@github.com:codesanook/codesanook-ef-note.git
+git clone git@github.com:{your-github-username}/codesanook-ef-note.git
 ```
+!!! Change **{your-github-username}** to your GitHub username
 
 - CD to to the root folder.
 ``sh
