@@ -88,7 +88,7 @@ namespace Codesanook.EFNote.Controllers
             var note = new Note()
             {
                 Title = viewModel.Title,
-                Content = viewModel.Content,
+                Content = viewModel.Content + DateTime.UtcNow,
                 NotebookId = viewModel.NotebookId,
                 Tags = allTags
             };
