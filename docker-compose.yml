@@ -1,29 +1,12 @@
 version: "3.8"
 
 services:
-  web:
-    build:
-      context: .
-      dockerfile: Dockerfile
-      target: base
-    image: codesanook-ef-note:latest
-    depends_on:
-      - db
-    environment:
-      ConnectionStrings__DefaultConnection: Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;CharSet=utf8mb4;
-      ASPNETCORE_URLS: http://*:8000
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./app:/app # ./app on local host is mapped to /app in the container
-    networks:
-      - compose_network
   db:
     image: mysql:5.7
     restart: always
     environment:
       # TODO move password to a secret file
-      MYSQL_ROOT_PASSWORD: MySQL1234!
+      MYSQL_ROOT_PASSWORD: MySQL123!
       # Set permission of this user in "set-database-permission.sql"
       MYSQL_USER: sa
       MYSQL_PASSWORD: "#5SR^Yz4!3N4jRE@"
@@ -46,6 +29,24 @@ services:
       - ./config:/etc/mysql/conf.d
     command:
       [--character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
+    networks:
+      - compose_network
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    image: codesanook-ef-note:latest
+    depends_on:
+      - db
+    environment:
+      ConnectionStrings__DefaultConnection: Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;CharSet=utf8mb4;
+      ASPNETCORE_URLS: http://*:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./app:/app # ./app on local host is mapped to /app in the container
     networks:
       - compose_network
 
