@@ -87,6 +87,9 @@ docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-co
 docker-compose up db
 ```
 
+## Presentation
+- [Link to Google slide presentation](https://docs.google.com/presentation/d/1OkDfotFvxa4PNxIj2VksGwfjXWVOAOURDJ59fUcXzzo/edit)
+
 ## TODO
 - [ ] Improve code quality
 - [ ] Use async/await
