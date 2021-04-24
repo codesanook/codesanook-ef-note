@@ -1,11 +1,9 @@
-docker image ls
+docker pull mysql:5.7
+docker pull mcr.microsoft.com/dotnet/sdk:5.0
+docker pull mcr.microsoft.com/dotnet/aspnet:5.0
 
-docker run \
-  -e MYSQL_ROOT_PASSWORD=MySQL123! \
-  -e MYSQL_DATABASE=ef-note \
-  -p 3306:3306 \
-  --name mysql \
-  mysql:5.7
+docker image ls
+docker run -e MYSQL_ROOT_PASSWORD=MySQL123! -e MYSQL_DATABASE=ef-note -p 3306:3306 --name mysql mysql:5.7
 
 ###########################
 USE `ef-note`;

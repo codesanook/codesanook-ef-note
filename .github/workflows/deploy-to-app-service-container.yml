@@ -5,7 +5,8 @@ on:
     branches:
       - main
 env:
- DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${{ github.sha }}
+  # your-name/ef-note:0fd5f6b9a71eb9dcf5f30c70f6e1b9b77dfadfb5 
+  DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${{ github.sha }}
 
 jobs:
   build:
