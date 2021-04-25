@@ -37,12 +37,10 @@ jobs:
       # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#package-management
       # https://github.com/actions/virtual-environments/blob/main/images/linux/scripts/installers/nodejs.sh
       # https://classic.yarnpkg.com/en/docs/cli/workspaces/#toc-yarn-workspaces-run
-      - name: Build all Node.js projects with Yarn Workspaces
+      - name: Build all Node.js projects if Yarn Workspaces exists
         run: |
-          node --version
-          yarn --version
-          yarn install
-          yarn workspaces run build
+          yarn workspaces info > /dev/null 2>&1 # Redirect STDERR to STDOUT to /dev/null (nothing on console)
+          if [ $? -eq 0 ]; then yarn install; yarn workspaces run build; else echo "No Yarn Workspaces"; fi 
 
       # https://github.com/actions/setup-dotnet
       - name: Setup .NET SDK version ${{ env.DOTNET_VERSION }}

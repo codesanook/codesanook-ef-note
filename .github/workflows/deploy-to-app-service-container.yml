@@ -1,4 +1,4 @@
-name: Deploy ASP.NET Core MVC to Azure App Service Linux Container
+name: Deploy ASP.NET Core MVC app to Azure App Service Linux Container
 
 on:
   push:
