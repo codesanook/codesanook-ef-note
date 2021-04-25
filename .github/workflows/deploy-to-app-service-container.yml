@@ -30,7 +30,7 @@ jobs:
           docker build --tag ${{ env.DOCKER_IMAGE_NAME }} --target release .
           docker push ${{ env.DOCKER_IMAGE_NAME }}
 
-      # Before downloading load publish profile, make sure that you have set WEBSITE_WEBDEPLOY_USE_SCM
+      # Before downloading a publish profile, make sure that you have set WEBSITE_WEBDEPLOY_USE_SCM
       # in App Service Configuration to true
       # configure port number 
       # https://docs.microsoft.com/en-us/azure/app-service/configure-custom-container?pivots=container-linux#configure-port-number

@@ -1,0 +1,69 @@
+name: Deploy ASP.NET Core MVC app to Azure App Service Code
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  WEB_PROJECT_DIR: ${{ github.workspace }}/app # Set to the root path of your web project, defaults to the repository root
+  OUTPUT_DIR: publish # Relative to a current working directory
+  DOTNET_VERSION: 5.x # Set .NET version to use
+  NODE_VERSION: 10.x # Set Node.js version to use
+
+jobs:
+  build:
+    # Find more virtual environments
+    # https://www.dotnetthailand.com/programming-cookbook/github-actions/github-actions-fundamentals#findmorevirtualenvironments
+    runs-on: ubuntu-latest
+
+    # You can use default run to set default working directory
+    # https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_iddefaultsrun
+    defaults:
+      run:
+        working-directory: ${{ env.WEB_PROJECT_DIR }}
+
+    steps:
+      - name: Checkout the latest source code from ${{ github.ref }} commit
+        uses: actions/checkout@v2
+
+      # https://github.com/actions/setup-node
+      - name: Use Node.js version ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # Yarn command already installed
+      # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#package-management
+      # https://github.com/actions/virtual-environments/blob/main/images/linux/scripts/installers/nodejs.sh
+      # https://classic.yarnpkg.com/en/docs/cli/workspaces/#toc-yarn-workspaces-run
+      - name: Build all Node.js projects with Yarn Workspaces
+        run: |
+          node --version
+          yarn --version
+          yarn install
+          yarn workspaces run build
+
+      # https://github.com/actions/setup-dotnet
+      - name: Setup .NET SDK version ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Restore Nuget packages
+        run: |
+          pwd
+          ls
+          dotnet restore
+
+      - name: Publish a .NET project to ${{ env.OUTPUT_DIR }}
+        run: dotnet publish --configuration Release --output ${{ env.OUTPUT_DIR }} --no-restore
+
+      # Before downloading a publish profile,
+      # please make sure you have set WEBSITE_WEBDEPLOY_USE_SCM in App Service configuration to true.
+      - name: Deploy to Azure App Service code publish
+        uses: azure/webapps-deploy@v2
+        with:
+          app-name: ${{ secrets.AZURE_WEBAPP_CODE_PUBLISH_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_CODE_PUBLISH_PROFILE }}
+          package: ${{ env.OUTPUT_DIR }}
