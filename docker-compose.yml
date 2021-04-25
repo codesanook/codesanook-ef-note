@@ -1,5 +1,16 @@
 version: "3.8"
 
+# docker run -e MYSQL_ROOT_PASSWORD=MySQL123! -e MYSQL_DATABASE=ef-note -p 3306:3306 --name mysql mysql:5.7
+
+# image: mysql:5.7
+
+# environment:
+#   MYSQL_ROOT_PASSWORD: MySQL123!
+#   MYSQL_DATABASE: codesanook-ef-note
+
+# ports:
+#   - 3306:3306
+
 services:
   db:
     image: mysql:5.7
@@ -32,6 +43,9 @@ services:
     networks:
       - compose_network
 
+  # image: codesanook-ef-note:latest costom image is advanced topic, put more detail in README.md
+  # depends_on:
+  #   - db
   web:
     build:
       context: .

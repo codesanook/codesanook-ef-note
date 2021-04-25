@@ -58,8 +58,6 @@ docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-co
     - `true`
   - `WEBSITES_PORT` 
     - `8000`
-  - `WEBSITES_PORT` 
-    - `true`
   - `CONNECTIONSTRINGS__DEFAULTCONNECTION` 
     - `Server={your-server-name}.mysql.database.azure.com; Port=3306; Database={your-database-name}; Uid={your-username}@{your-server-name}; Pwd={your-password}; SslMode=Preferred;CharSet=utf8mb4;`
 
