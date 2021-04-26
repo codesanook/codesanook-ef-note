@@ -27,26 +27,23 @@ jobs:
       - name: Checkout the latest source code from ${{ github.ref }} commit
         uses: actions/checkout@v2
 
+      - name: Set YARN_WORKSPACES_EXIST variable
+        run: |
+          workspaces_info_result=$(yarn workspaces info > /dev/null 2>&1; echo $?; exit 0)
+          if [ $workspaces_info_result -eq 0 ]; then echo "YARN_WORKSPACES_EXIST=1" >> $GITHUB_ENV; fi
+
       # https://github.com/actions/setup-node
       - name: Use Node.js version ${{ env.NODE_VERSION }}
+        if: ${{ env.YARN_WORKSPACES_EXIST == 1 }}
         uses: actions/setup-node@v2
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      # Yarn command already installed
-      # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#package-management
-      # https://github.com/actions/virtual-environments/blob/main/images/linux/scripts/installers/nodejs.sh
-      # https://classic.yarnpkg.com/en/docs/cli/workspaces/#toc-yarn-workspaces-run
       - name: Build all Node.js projects if Yarn Workspaces exists
+        if: ${{ env.YARN_WORKSPACES_EXIST == 1 }}
         run: |
-          workspace_info_result=$(yarn workspaces info > /dev/null 2>&1; echo $?; exit 0)
-          if [ $workspace_info_result -eq 0 ]
-          then 
-            yarn install
-            yarn workspaces run build
-          else
-            echo "No Yarn Workspaces to run"
-          fi
+          yarn install
+          yarn workspaces run build
 
       # https://github.com/actions/setup-dotnet
       - name: Setup .NET SDK version ${{ env.DOTNET_VERSION }}
