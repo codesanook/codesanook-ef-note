@@ -33,22 +33,20 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: Set YARN_WORKSPACES_EXIST variable
-        continue-on-error: true # We don't want to break a job if this step if there is exist code not 0
-        run: |
-          yarn workspaces info > /dev/null 2>&1 # Redirect STDERR to STDOUT to /dev/null (nothing on console)
-          if [ $? -eq 0 ]; then exist=1; fi
-          echo "YARN_WORKSPACES_EXIST=$exist" >> $GITHUB_ENV
-         
       # Yarn command already installed
       # https://github.com/actions/virtual-environments/blob/main/images/linux/Ubuntu1804-README.md#package-management
       # https://github.com/actions/virtual-environments/blob/main/images/linux/scripts/installers/nodejs.sh
       # https://classic.yarnpkg.com/en/docs/cli/workspaces/#toc-yarn-workspaces-run
       - name: Build all Node.js projects if Yarn Workspaces exists
-        if: ${{ env.YARN_WORKSPACES_EXIST == 1 }}
         run: |
-          yarn install
-          yarn workspaces run build
+          workspace_info_result=$(yarn workspaces info > /dev/null 2>&1; echo $?; exit 0)
+          if [ $workspace_info_result -eq 0 ]
+          then 
+            yarn install
+            yarn workspaces run build
+          else
+            echo "No Yarn Workspaces to run"
+          fi
 
       # https://github.com/actions/setup-dotnet
       - name: Setup .NET SDK version ${{ env.DOTNET_VERSION }}
