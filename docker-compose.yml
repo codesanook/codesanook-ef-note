@@ -52,11 +52,10 @@ services:
       dockerfile: Dockerfile
       target: base
     image: codesanook-ef-note:latest
-    depends_on:
-      - db
     environment:
       ConnectionStrings__DefaultConnection: Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;CharSet=utf8mb4;
       ASPNETCORE_URLS: http://0.0.0.0:8000 # A server will be reachable with any IPs a specific port number.
+      DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSE: 1 # We can't lanuch a browser inside a Docker container for dotnet watch run
     ports:
       - "8000:8000"
     volumes:

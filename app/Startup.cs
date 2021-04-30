@@ -66,7 +66,9 @@ namespace Codesanook.EFNote
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
-            app.UseHttpsRedirection();
+            // TODO temporary remove https://stackoverflow.com/questions/50935730/how-do-i-disable-https-in-asp-net-core-2-1-kestrel
+            // app.UseHttpsRedirection();
+
             app.UseStaticFiles();
             app.UseRouting();
 
