@@ -4,6 +4,7 @@ using Codesanook.EFNote.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Codesanook.EFNote.Migrations
 {
@@ -14,15 +15,17 @@ namespace Codesanook.EFNote.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("Relational:MaxIdentifierLength", 64)
-                .HasAnnotation("ProductVersion", "5.0.5");
+                .HasAnnotation("Relational:MaxIdentifierLength", 63)
+                .HasAnnotation("ProductVersion", "5.0.5")
+                .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
             modelBuilder.Entity("Codesanook.EFNote.Models.Note", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("integer")
+                        .HasColumnName("id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -31,29 +34,30 @@ namespace Codesanook.EFNote.Migrations
 
                     b.Property<DateTime>("CreatedUtc")
                         .ValueGeneratedOnAddOrUpdate()
-                        .HasColumnType("datetime")
-                        .HasColumnName("created_utc");
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_utc")
+                        .HasDefaultValueSql("timezone('utc', now())");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("tinyint(1)")
+                        .HasColumnType("boolean")
                         .HasColumnName("is_deleted");
 
                     b.Property<int>("NotebookId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("notebook_id");
 
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(512)
-                        .HasColumnType("varchar(512)")
+                        .HasColumnType("character varying(512)")
                         .HasColumnName("title");
 
                     b.Property<DateTime?>("UpdatedUtc")
-                        .HasColumnType("datetime")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("updated_utc");
 
                     b.Property<int>("ViewCount")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("view_count");
 
                     b.HasKey("Id")
@@ -63,66 +67,56 @@ namespace Codesanook.EFNote.Migrations
                         .HasDatabaseName("ix_note_notebook_id");
 
                     b.ToTable("note");
-
-                    b
-                        .HasAnnotation("MySQL:Charset", "utf8mb4")
-                        .HasAnnotation("MySQL:Collation", "utf8mb4_unicode_ci");
                 });
 
             modelBuilder.Entity("Codesanook.EFNote.Models.Notebook", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("integer")
+                        .HasColumnName("id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
+                        .HasColumnType("character varying(256)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
                         .HasName("pk_notebook");
 
                     b.ToTable("notebook");
-
-                    b
-                        .HasAnnotation("MySQL:Charset", "utf8mb4")
-                        .HasAnnotation("MySQL:Collation", "utf8mb4_unicode_ci");
                 });
 
             modelBuilder.Entity("Codesanook.EFNote.Models.Tag", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasColumnType("integer")
+                        .HasColumnName("id")
+                        .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(512)
-                        .HasColumnType("varchar(512)")
+                        .HasColumnType("character varying(512)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")
                         .HasName("pk_tag");
 
                     b.ToTable("tag");
-
-                    b
-                        .HasAnnotation("MySQL:Charset", "utf8mb4")
-                        .HasAnnotation("MySQL:Collation", "utf8mb4_unicode_ci");
                 });
 
             modelBuilder.Entity("NoteTag", b =>
                 {
                     b.Property<int>("NotesId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("notes_id");
 
                     b.Property<int>("TagsId")
-                        .HasColumnType("int")
+                        .HasColumnType("integer")
                         .HasColumnName("tags_id");
 
                     b.HasKey("NotesId", "TagsId")

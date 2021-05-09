@@ -1,6 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.EntityFrameworkCore.Metadata;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace Codesanook.EFNote.Migrations
 {
@@ -12,9 +12,9 @@ namespace Codesanook.EFNote.Migrations
                 name: "notebook",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "varchar(256)", maxLength: 256, nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -25,9 +25,9 @@ namespace Codesanook.EFNote.Migrations
                 name: "tag",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    name = table.Column<string>(type: "varchar(512)", maxLength: 512, nullable: false)
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    name = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -38,16 +38,15 @@ namespace Codesanook.EFNote.Migrations
                 name: "note",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    title = table.Column<string>(type: "varchar(512)", maxLength: 512, nullable: false),
+                    id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    title = table.Column<string>(type: "character varying(512)", maxLength: 512, nullable: false),
                     content = table.Column<string>(type: "text", nullable: false),
-                    created_utc = table.Column<DateTime>(type: "datetime", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.ComputedColumn),
-                    updated_utc = table.Column<DateTime>(type: "datetime", nullable: true),
-                    is_deleted = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    view_count = table.Column<int>(type: "int", nullable: false),
-                    notebook_id = table.Column<int>(type: "int", nullable: false)
+                    created_utc = table.Column<DateTime>(type: "timestamp without time zone", nullable: false, defaultValueSql: "timezone('utc', now())"),
+                    updated_utc = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    is_deleted = table.Column<bool>(type: "boolean", nullable: false),
+                    view_count = table.Column<int>(type: "integer", nullable: false),
+                    notebook_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,8 +62,8 @@ namespace Codesanook.EFNote.Migrations
                 name: "note_tag",
                 columns: table => new
                 {
-                    notes_id = table.Column<int>(type: "int", nullable: false),
-                    tags_id = table.Column<int>(type: "int", nullable: false)
+                    notes_id = table.Column<int>(type: "integer", nullable: false),
+                    tags_id = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {

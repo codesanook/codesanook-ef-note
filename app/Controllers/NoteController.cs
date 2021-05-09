@@ -84,12 +84,17 @@ namespace Codesanook.EFNote.Controllers
         [HttpPost]
         public IActionResult Create([Bind(Prefix = "SelectedNote")] NoteViewModel viewModel)
         {
+            if(viewModel.NotebookId == 0){
+                return View(nameof(Index));
+            }
+            
             var allTags = GetAllTags(viewModel.Tags);
             var note = new Note()
             {
                 Title = viewModel.Title,
                 Content = viewModel.Content,
                 NotebookId = viewModel.NotebookId,
+                CreatedUtc = DateTime.UtcNow,
                 Tags = allTags
             };
 

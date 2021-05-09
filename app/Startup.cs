@@ -29,7 +29,7 @@ namespace Codesanook.EFNote
             services.AddDbContext<NoteDbContext>(option =>
             {
                 option
-                    .UseMySQL(connectionString)
+                    .UseNpgsql(connectionString)
                     .UseSnakeCaseNamingConvention();
             });
 

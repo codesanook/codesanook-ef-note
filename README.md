@@ -53,13 +53,15 @@ docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-co
 - You should find an example ASP.NET Core MVC app 
 
 ### Set some configurations 
-- Set these configurations:
+- Set these configurations to your app service:
   - `WEBSITE_WEBDEPLOY_USE_SCM` 
     - `true`
   - `WEBSITES_PORT` 
     - `8000`
   - `CONNECTIONSTRINGS__DEFAULTCONNECTION` 
-    - `Server={your-server-name}.mysql.database.azure.com; Port=3306; Database={your-database-name}; Uid={your-username}@{your-server-name}; Pwd={your-password}; SslMode=Preferred;CharSet=utf8mb4;`
+    - MySQL: `Server={your-server-name}.mysql.database.azure.com; Port=3306; Database={your-database-name}; Uid={your-username}@{your-server-name}; Pwd={your-password}; SslMode=Preferred;CharSet=utf8mb4;`
+    - PostgreSQL: `Host={your-server-name};Port=5432;Database={your-database-name};Username={your-username};Password={your-password};SSL Mode=Require;Trust Server Certificate=true`
+- More details for Npgsql SSL connection https://www.npgsql.org/doc/security.html#encryption-ssltls
 
 ### Create DockerHub repository and get a new token
 - Create a public DockerHub repository
@@ -79,10 +81,10 @@ docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-co
 - Create new commit and push the project to the main branch
 
 ## Debugging
-- CD to `app` folder and launch run with debugging with VS Code `.NET Core launch (web)`
-- Start only a database  container
+- CD to `app` folder and launch the app with debugging `.NET Core launch (web)`.
+- Start only a database  container at root level folder.
 ```sh
-docker-compose up db
+docker-compose up postgres
 ```
 
 ## Presentation
@@ -91,3 +93,19 @@ docker-compose up db
 ## TODO
 - [ ] Improve code quality
 - [ ] Use async/await
+
+## Database migration
+- Additional required package 
+  - Microsoft.EntityFrameworkCore.Design
+- Create your first migration 
+```
+dotnet ef migrations add InitialCreate 
+```
+- Apply migrations to a database
+```
+dotnet ef database update
+```
+- Remove migration
+```
+dotnet ef migrations remove
+```

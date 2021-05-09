@@ -21,7 +21,7 @@ services:
       # Set permission of this user in "set-database-permission.sql"
       MYSQL_USER: sa
       MYSQL_PASSWORD: "#5SR^Yz4!3N4jRE@"
-      MYSQL_DATABASE: codesanook-ef-note
+      MYSQL_DATABASE: ef-note
     ports:
       - 3306:3306
     healthcheck:
@@ -43,6 +43,18 @@ services:
     networks:
       - compose_network
 
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: ef-note
+      POSTGRES_USER: sa
+      POSTGRES_PASSWORD: 12345Abc%
+    ports:
+      - 5432:5432
+    networks:
+      - compose_network
+
   # image: codesanook-ef-note:latest costom image is advanced topic, put more detail in README.md
   # depends_on:
   #   - db
@@ -53,7 +65,9 @@ services:
       target: base
     image: codesanook-ef-note:latest
     environment:
-      ConnectionStrings__DefaultConnection: Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;CharSet=utf8mb4;
+      #ConnectionStrings__DefaultConnection: Server=db;Database=codesanook-ef-note;Uid=sa;Pwd=#5SR^Yz4!3N4jRE@;CharSet=utf8mb4;
+      # https://www.npgsql.org/doc/connection-string-parameters.html
+      ConnectionStrings__DefaultConnection: Host=postgres;Port=5432;Database=ef-note;Username=sa;Password=12345Abc%
       ASPNETCORE_URLS: http://0.0.0.0:8000 # A server will be reachable with any IPs a specific port number.
       DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSE: 1 # We can't lanuch a browser inside a Docker container for dotnet watch run
     ports:
