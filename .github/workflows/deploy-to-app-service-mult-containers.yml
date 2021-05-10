@@ -1,0 +1,31 @@
+name: Deploy ASP.NET Core MVC app to Azure App Service multi-containers
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    # Find more virtual environments
+    # https://www.dotnetthailand.com/programming-cookbook/github-actions/github-actions-fundamentals#findmorevirtualenvironments
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout the latest source code from ${{ github.ref }} commit
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Azure CLI script
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az webapp config container set \
+              --resource-group  aaron-resource-group \
+              --name cs-multi-containers \
+              --multicontainer-config-type compose \
+              --multicontainer-config-file docker-compose-wp.yml

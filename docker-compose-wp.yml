@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: somewordpress
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+    volumes:
+      - ${WEBAPP_STORAGE_HOME}/mysql-data:/var/lib/mysql
+      - ${WEBAPP_STORAGE_HOME}/mysql-log:/var/log/mysql
+    # https://dev.mysql.com/doc/refman/5.7/en/error-log-unix.html
+    command: mysqld --log-error=/var/log/mysql/error-log.log
+    # --general-log=1 --general-log-file=/var/log/mysql/general-log.log 
+
+  wordpress:
+    depends_on:
+      - db
+    image: wordpress:latest
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wordpress
+    volumes:
+      - ${WEBAPP_STORAGE_HOME}/site/wwwroot:/var/www/html
