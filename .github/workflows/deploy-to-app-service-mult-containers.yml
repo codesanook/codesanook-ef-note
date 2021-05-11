@@ -5,6 +5,11 @@ on:
     branches:
       - main
 
+defaults:
+  run:
+    # Using a specific shell https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#using-a-specific-shell
+    shell: pwsh
+
 jobs:
   build:
     # Find more virtual environments
@@ -20,12 +25,29 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Azure CLI script
-        uses: azure/CLI@v1
-        with:
-          inlineScript: |
-            az webapp config container set \
-              --resource-group  aaron-resource-group \
-              --name cs-multi-containers \
-              --multicontainer-config-type compose \
+      - name: Publish app service multi-containers
+        run: |
+          az --version
+          $commandResult = pwsh -NoProfile -Command { 
+            az webapp show `
+            --name cs-multi-containers `
+            --resource-group aaron-resource-group 2>&1 `
+            | out-null; $LastExitCode; 
+          }
+
+          if($commandResult -eq 0) {
+            "Updating containers with changes in a compose file" 
+            az webapp config container set `
+              --resource-group aaron-resource-group `
+              --name cs-multi-containers `
+              --multicontainer-config-type compose `
               --multicontainer-config-file docker-compose-wp.yml
+          } else {
+            "Creating a new app service with multi-containers"
+            az webapp create `
+              --resource-group aaron-resource-group `
+              --plan cs-container-app-service-plan `
+              --name cs-multi-containers `
+              --multicontainer-config-type compose `
+              --multicontainer-config-file docker-compose-wp.yml
+          }
