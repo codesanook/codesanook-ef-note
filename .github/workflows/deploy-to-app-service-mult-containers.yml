@@ -28,11 +28,13 @@ jobs:
       - name: Publish app service multi-containers
         run: |
           az --version
-          $commandResult = pwsh -NoProfile -Command { 
+          $commandResult = & { 
             az webapp show `
-            --name cs-multi-containers `
-            --resource-group aaron-resource-group 2>&1 `
-            | out-null; $LastExitCode; 
+              --name cs-multi-containers `
+              --resource-group aaron-resource-group 2>&1 `
+              | out-null; `
+            $LastExitCode; `
+            $global:LastExitCode = 0;
           }
 
           if($commandResult -eq 0) {
