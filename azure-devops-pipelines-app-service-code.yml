@@ -1,0 +1,72 @@
+# To use this file, you need to configure Pipelines settings in Azure DevOps portal.
+# URL: https://dev.azure.com/aaronamm/
+
+# Official document
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+# GitHub trigger https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml#ci-triggers
+trigger:
+- develop
+
+pool:
+  vmImage: ubuntu-latest
+
+variables:
+  # Use predefined variables https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml
+  # Pipeline.Workspace != Build.SourcesDirectory
+  webProjectPath: $(Build.SourcesDirectory)/CoreMvcAppService/CoreMvcAppService.csproj # Set this to the path to your web app project.
+  dotnetVersion: 5.0.x # Set this to the dot net version to use.
+  buildConfiguration: Release
+
+steps:
+- task: CmdLine@2
+  inputs:
+    script: |
+      pwd
+      ls
+  displayName: logging directory information
+
+- task: UseDotNet@2
+  inputs:
+    version: $(dotnetVersion)
+    performMultiLevelLookup: true # To install a newer SDK
+    includePreviewVersions: true # Required for preview versions
+  displayName: install .NET version $(dotnetVersion) 
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: restore
+    feedsToUse: select # Select a feed from NuGet
+    # workingDirectory" seems to be ignored for DotNetCoreCLI@2 https://github.com/microsoft/azure-pipelines-tasks/issues/10996
+    # Use projects instead https://github.com/microsoft/azure-pipelines-tasks/tree/master/Tasks/DotNetCoreCLIV2#parameters-of-the-task
+    projects: $(webProjectPath) 
+  displayName: dotnet restore in $(webProjectPath)
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: build
+    arguments: --configuration $(buildConfiguration)
+    projects: $(webProjectPath)
+  displayName: dotnet build --configuration $(buildConfiguration)
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: publish
+    arguments: --configuration $(BuildConfiguration) --output $(Build.SourcesDirectory)/publish
+    publishWebProjects: True
+    zipAfterPublish: True
+  displayName: dotnet publish --configuration $(BuildConfiguration) --output $(Build.SourcesDirectory)/publish
+
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: $(Build.SourcesDirectory)/publish
+    artifactName: artifect
+
+# TODO add publishing to Azure Devops Feed and release version number
+
+- task: AzureWebApp@1
+  inputs:
+    azureSubscription: codesanook-examples-service-connection
+    appName: cs-core-mvc-pipelines 
+    package: $(Build.SourcesDirectory)/publish/**/*.zip  
+
