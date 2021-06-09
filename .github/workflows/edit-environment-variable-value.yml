@@ -1,0 +1,32 @@
+name: Edit environment variable value
+on:
+  push:
+    branches:
+      - main
+
+env:
+  RELEASE_NUMBER: 4.14.1|09.06.2021
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    # job level default
+    # https://www.dotnetthailand.com/programming-cookbook/github-actions/github-actions-fundamentals#changeadefaultshell
+    defaults:
+      run:
+        shell: pwsh
+
+    steps:
+      - name: Change environment variable's value
+        # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7.1
+        run: |
+          $releaseNumber = $env:RELEASE_NUMBER.SubString(0, $env:RELEASE_NUMBER.IndexOf('|'))
+
+          # For PowerShell, we need to use an environment file. https://github.community/t/empty-github-env-variables-on-powershell/147626/2
+          "RELEASE_NUMBER=$releaseNumber" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append         
+
+      - name: Output environment variable's value in many ways
+        run: |
+          "RELEASE_NUMBER = $env:RELEASE_NUMBER"
+          "RELEASE_NUMBER = ${{ env.RELEASE_NUMBER }}"
