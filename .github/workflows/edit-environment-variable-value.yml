@@ -15,18 +15,20 @@ jobs:
     # https://www.dotnetthailand.com/programming-cookbook/github-actions/github-actions-fundamentals#changeadefaultshell
     defaults:
       run:
-        shell: pwsh
+        shell: bash # It is default shell for non-Windows platform but just show how to set a default shell at job level.
 
     steps:
       - name: Change environment variable's value
         # https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_environment_variables?view=powershell-7.1
+        shell: pwsh # Running a script/command in this step with PowerShell Core
         run: |
           $releaseNumber = $env:RELEASE_NUMBER.SubString(0, $env:RELEASE_NUMBER.IndexOf('|'))
 
           # For PowerShell, we need to use an environment file. https://github.community/t/empty-github-env-variables-on-powershell/147626/2
           "RELEASE_NUMBER=$releaseNumber" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append         
 
-      - name: Output environment variable's value in many ways
+      - name: Output environment variable's value in multiple ways
+        # This step runs script/command with Bash
         run: |
-          "RELEASE_NUMBER = $env:RELEASE_NUMBER"
-          "RELEASE_NUMBER = ${{ env.RELEASE_NUMBER }}"
+          echo "RELEASE_NUMBER = $RELEASE_NUMBER"
+          echo "RELEASE_NUMBER = ${{ env.RELEASE_NUMBER }}"
