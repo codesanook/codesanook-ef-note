@@ -1,2 +1,4 @@
 [mysqld]
+
+# Explicit lower_case_table_names to avoid case sensitive on disk issue
 lower_case_table_names=1

@@ -7,6 +7,7 @@ on:
 env:
   # your-name/ef-note:0fd5f6b9a71eb9dcf5f30c70f6e1b9b77dfadfb5 
   DOCKER_IMAGE_NAME: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.DOCKERHUB_REPOSITORY }}:${{ github.sha }}
+  DOTNET_VERSION: 5.0.x # Set .NET version to use
 
 jobs:
   build:
@@ -16,7 +17,23 @@ jobs:
     steps:
       - name: Checkout the latest source code from {{ github.ref }}
         uses: actions/checkout@v2
- 
+
+      # https://github.com/actions/setup-dotnet
+      - name: Setup .NET SDK version ${{ env.DOTNET_VERSION }}
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Update database
+        run: |
+          dotnet tool install --global dotnet-ef
+          dotnet ef database update --verbose
+        env:
+          # https://andrewlock.net/how-to-set-the-hosting-environment-in-asp-net-core/#changing-the-hosting-environment
+          CONNECTIONSTRINGS__DEFAULTCONNECTION: ${{ secrets.CONNECTION_STRING }}
+        working-directory: ./app
+
+
       # https://github.com/docker/login-action/releases
       - name: Login to Docker Hub
         uses: docker/login-action@v1

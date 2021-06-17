@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using MySql.EntityFrameworkCore.Extensions;
 
 namespace Codesanook.EFNote.Models
 {
@@ -9,7 +10,8 @@ namespace Codesanook.EFNote.Models
         {
             builder
                 .ToTable("note")
-                .Property(e => e.CreatedUtc).HasDefaultValueSql("timezone('utc', now())");
+                .ForMySQLHasCollation("utf8mb4_unicode_ci")
+                .ForMySQLHasCharset("utf8mb4");
 
             builder
                 .HasMany(e => e.Tags)

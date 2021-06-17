@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-// using MySql.EntityFrameworkCore.Extensions;
+using MySql.EntityFrameworkCore.Extensions;
 
 namespace Codesanook.EFNote.Models
 {
@@ -17,22 +17,18 @@ namespace Codesanook.EFNote.Models
                 .ToTable("notebook")
                 .HasMany(e => e.Notes)
                 .WithOne(e => e.Notebook)
-                .OnDelete(DeleteBehavior.NoAction);
+                .OnDelete(DeleteBehavior.Cascade);
 
-            //modelBuilder.Entity<Notebook>();
-            //.ForMySQLHasCollation("utf8mb4_unicode_ci")
-            //.ForMySQLHasCharset("utf8mb4");
-
-
-            //.ForMySQLHasCollation("utf8mb4_unicode_ci")
-            //.ForMySQLHasCharset("utf8mb4");
+            modelBuilder.Entity<Notebook>()
+                .ForMySQLHasCollation("utf8mb4_unicode_ci")
+                .ForMySQLHasCharset("utf8mb4");
 
             modelBuilder.Entity<Tag>()
-                .ToTable("tag");
-            //.ForMySQLHasCollation("utf8mb4_unicode_ci")
-            //.ForMySQLHasCharset("utf8mb4");
-            modelBuilder.ApplyConfiguration(new NoteConfiguration());
+                .ToTable("tag")
+                .ForMySQLHasCollation("utf8mb4_unicode_ci")
+                .ForMySQLHasCharset("utf8mb4");
 
+            modelBuilder.ApplyConfiguration(new NoteConfiguration());
         }
     }
 }

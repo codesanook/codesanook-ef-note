@@ -59,8 +59,7 @@ docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-co
   - `WEBSITES_PORT` 
     - `8000`
   - `CONNECTIONSTRINGS__DEFAULTCONNECTION` 
-    - MySQL: `Server={your-server-name}.mysql.database.azure.com; Port=3306; Database={your-database-name}; Uid={your-username}@{your-server-name}; Pwd={your-password}; SslMode=Preferred;CharSet=utf8mb4;`
-    - PostgreSQL: `Host={your-server-name};Port=5432;Database={your-database-name};Username={your-username};Password={your-password};SSL Mode=Require;Trust Server Certificate=true`
+    - `Server={your-server-name}.mysql.database.azure.com; Port=3306; Database={your-database-name}; Uid={your-username}@{your-server-name}; Pwd={your-password}; SslMode=Preferred;CharSet=utf8mb4;`
 - More details for Npgsql SSL connection https://www.npgsql.org/doc/security.html#encryption-ssltls
 
 ### Create DockerHub repository and get a new token
@@ -84,7 +83,7 @@ docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-co
 - CD to `app` folder and launch the app with debugging `.NET Core launch (web)`.
 - Start only a database  container at root level folder.
 ```sh
-docker-compose up postgres
+docker-compose up db
 ```
 
 ## Presentation
@@ -96,7 +95,7 @@ docker-compose up postgres
 
 ## Database migration
 - Additional required package 
-  - Microsoft.EntityFrameworkCore.Design
+  - dotnet add Microsoft.EntityFrameworkCore.Design
 - Create your first migration 
 ```
 dotnet ef migrations add InitialCreate 

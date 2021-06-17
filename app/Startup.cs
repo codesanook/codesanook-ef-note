@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using MySql.EntityFrameworkCore.Extensions;
 
 namespace Codesanook.EFNote
 {
@@ -26,10 +27,11 @@ namespace Codesanook.EFNote
 
             // EF context objects should be scoped for a per-request lifetime.
             var connectionString = Configuration.GetConnectionString("DefaultConnection");
+            Console.WriteLine(connectionString);
             services.AddDbContext<NoteDbContext>(option =>
             {
                 option
-                    .UseNpgsql(connectionString)
+                    .UseMySQL(connectionString)
                     .UseSnakeCaseNamingConvention();
             });
 
