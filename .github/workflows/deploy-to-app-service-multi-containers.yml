@@ -1,4 +1,5 @@
-name: Deploy ASP.NET Core MVC app to Azure App Service multi-containers
+name: Deploy Wordpress and a database server to Azure App Service multi-containers
+# Use docker-compose-wp.yml as a main docker-compose file
 
 on:
   push:
@@ -8,7 +9,7 @@ on:
 defaults:
   run:
     # Using a specific shell https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#using-a-specific-shell
-    shell: pwsh
+    shell: pwsh # Use PowerShell Core
 
 jobs:
   build:
@@ -25,19 +26,19 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Publish app service multi-containers
+      - name: Set APP_SERVICE_EXIST variable
         run: |
-          az --version
+          # Not output to STDERR and store last exit code to $commandResult 
           $commandResult = & { 
-            az webapp show `
-              --name cs-multi-containers `
-              --resource-group aaron-resource-group 2>&1 `
-              | out-null; `
+            az webapp show --name cs-multi-containers --resource-group aaron-resource-group 2>&1 | Out-Null;`
             $LastExitCode; `
             $global:LastExitCode = 0;
           }
+          if($commandResult -eq 0) { "APP_SERVICE_EXIST=1" | Out-File -FilePath $Env:GITHUB_ENV -Encoding utf8 -Append }
 
-          if($commandResult -eq 0) {
+      - name: Publish app service multi-containers
+        run: |
+          if($env:APP_SERVICE_EXIST -eq 1) {
             "Updating containers with changes in a compose file" 
             az webapp config container set `
               --resource-group aaron-resource-group `
