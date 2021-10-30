@@ -1,6 +1,7 @@
 name: Deploy ASP.NET Core MVC app to Azure App Service Linux Container
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
