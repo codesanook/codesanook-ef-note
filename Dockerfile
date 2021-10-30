@@ -34,6 +34,5 @@ RUN apk add tree
 
 WORKDIR /dist
 
-COPY ./entrypoint-release.sh /
-RUN chmod +x /entrypoint-release.sh
+# Database migration is "Update database" step in deploy-to-app-service-container.yml
 ENTRYPOINT ["/bin/sh", "-c" , "sleep 10 && dotnet Codesanook.EFNote.dll"]
