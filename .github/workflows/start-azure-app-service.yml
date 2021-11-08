@@ -1,0 +1,22 @@
+# .github/workflows/start-azure-app-service.yml
+name: Start Azure App Service
+on:
+  schedule:
+    - cron: "* 23 * * *" # every 6AM of UTC+7
+
+jobs:
+  start_azure_app_service:
+    name: Start Azure App Service
+    # Find more virtual environment at https://github.com/actions/virtual-environments#available-environments.
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Azure Login
+        # https://github.com/Azure/login/tags
+        uses: azure/login@v1
+        with:
+          # We don't need to set a default subscription because we get credentials from a specific subscription.
+          creds: ${{ secrets.AZURE_CREDENTIALS }} #
+
+      - name: Start Azure App Service with Azure CLI
+        run: az webapp start --name ${{ secrets.AZURE_APP_SERVICE_NAME }} --resource-group ${{ secrets.AZURE_RESOURCE_GROUP_NAME }}
