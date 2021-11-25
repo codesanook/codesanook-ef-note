@@ -18,14 +18,7 @@ namespace Codesanook.EFNote.Models
                 .WithOne(e => e.Notebook)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Notebook>();
-                // .ForMySQLHasCollation("utf8mb4_unicode_ci")
-                // .ForMySQLHasCharset("utf8mb4");
-
-            modelBuilder.Entity<Tag>()
-                .ToTable("tag");
-                // .ForMySQLHasCollation("utf8mb4_unicode_ci")
-                // .ForMySQLHasCharset("utf8mb4");
+            modelBuilder.Entity<Tag>().ToTable("tag");
 
             modelBuilder.ApplyConfiguration(new NoteConfiguration());
         }

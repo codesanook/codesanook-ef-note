@@ -76,10 +76,12 @@ docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-co
 
 ## Debugging
 - CD to `src/Codesanook.EFNote` folder and launch the app with debugging `.NET Core launch (web)`.
-- Start only a database  container at root level folder.
-```sh
-docker-compose up db
-```
+- Start only a database container at root level folder.
+  ```sh
+  docker compose up mysql
+  # or
+  docker compose up mssql
+  ```
 
 ## Presentation
 - [Link to Google slide presentation](https://docs.google.com/presentation/d/1OkDfotFvxa4PNxIj2VksGwfjXWVOAOURDJ59fUcXzzo/edit)

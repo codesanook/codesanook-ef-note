@@ -1,3 +1,4 @@
+# multiple Dockerfile naming https://stackoverflow.com/a/63995752/1872200
 # https://hub.docker.com/_/microsoft-dotnet-sdk
 FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS base
 
@@ -8,9 +9,9 @@ RUN dotnet tool install --global dotnet-ef
 # We can't copy files to a working directory
 WORKDIR /app
 
-COPY ./entrypoint.sh /
-RUN chmod +x /entrypoint.sh
-ENTRYPOINT ["/entrypoint.sh"]
+COPY ./entrypoint.web.sh /
+RUN chmod +x /entrypoint.web.sh
+ENTRYPOINT ["/entrypoint.web.sh"]
 
 ### Other configuration for production ###
 FROM base as builder

@@ -9,8 +9,6 @@ namespace Codesanook.EFNote.Models
         {
             builder
                 .ToTable("note");
-                //.ForMySQLHasCollation("utf8mb4_unicode_ci")
-                //.ForMySQLHasCharset("utf8mb4");
 
             builder
                 .HasMany(e => e.Tags)

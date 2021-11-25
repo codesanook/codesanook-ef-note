@@ -17,7 +17,7 @@ namespace Codesanook.EFNote.Models
         [Required]
         public string Content { get; set; }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+        // [DatabaseGenerated(DatabaseGeneratedOption.Computed)] does not work now for MS SQL 2016 + EF Core 6
         public DateTime CreatedUtc { get; set; }
 
         public DateTime? UpdatedUtc { get; set; }

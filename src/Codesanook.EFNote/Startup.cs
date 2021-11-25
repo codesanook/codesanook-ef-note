@@ -27,12 +27,13 @@ namespace Codesanook.EFNote
             // EF context objects should be scoped for a per-request lifetime.
             var connectionString = configuration.GetConnectionString("DefaultConnection");
             Console.WriteLine(connectionString);
-            var serverVersion = new MySqlServerVersion(new Version(5, 7, 0));
+            var mySQLServerVersion = new MySqlServerVersion(new Version(5, 7, 0));
 
             services.AddDbContext<NoteDbContext>(option =>
             {
                     option
-                        .UseMySql(connectionString, serverVersion)
+                        //.UseMySql(connectionString, serverVersion)
+                        .UseSqlServer(connectionString)
                         .UseSnakeCaseNamingConvention();
 
                 // if (env.IsDevelopment())
