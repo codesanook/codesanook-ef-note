@@ -1,18 +1,21 @@
 # https://hub.docker.com/_/microsoft-dotnet-sdk
-FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS base
+FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine AS base
+
+# Istall EF tool for database migration
 RUN dotnet tool install --global dotnet-ef
 
-# /app is mounted to local app folder in docker-compose configuration 
+# /app is mounted to a local app folder in docker-compose configuration
 # We can't copy files to a working directory
-WORKDIR /app 
+WORKDIR /app
 
 COPY ./entrypoint.sh /
 RUN chmod +x /entrypoint.sh
 ENTRYPOINT ["/entrypoint.sh"]
 
+### Other configuration for production ###
 FROM base as builder
 # Copy the source code
-COPY ./app /workspace
+COPY ./src/Codesanook.EFNote /workspace
 WORKDIR /workspace
 RUN mkdir /publish
 
@@ -20,7 +23,7 @@ RUN mkdir /publish
 RUN dotnet restore
 RUN dotnet publish -c Release -o /publish
 
-FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine AS release
+FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS release
 ENV ASPNETCORE_URLS http://*:8000
 EXPOSE 8000
 

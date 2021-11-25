@@ -50,7 +50,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./app:/app # ./app on local host is mapped to /app in the container
+      - ./src/Codesanook.EFNote:/app # ./src/Codesanook.EFNote on a local host is mapped to /app in the container
     networks:
       - compose_network
 

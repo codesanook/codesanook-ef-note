@@ -1,0 +1,94 @@
+@import "~bootstrap/scss/bootstrap";
+@import "~font-awesome/scss/font-awesome";
+
+.primary-menu {
+  @include make-row();
+  margin-top: 20px;
+}
+
+.secondary-menu {
+  @include make-row();
+  margin-top: 20px;
+}
+
+.notification-bar {
+  @include make-row();
+}
+
+.notification {
+  @include make-col-ready();
+
+  @include media-breakpoint-up(lg) {
+    @include make-col-offset(3);
+    @include make-col(6);
+  }
+
+  text-align: center;
+}
+
+.main-panel {
+  @include make-row();
+  margin-top: 40px;
+}
+
+.notebook-list {
+  @include make-col-ready();
+
+  @include media-breakpoint-up(sm) {
+    @include make-col(3);
+  }
+
+  @include media-breakpoint-up(lg) {
+    @include make-col(2);
+  }
+}
+
+.note-list {
+  @include make-col-ready();
+
+  @include media-breakpoint-up(sm) {
+    @include make-col(3);
+  }
+
+  @include media-breakpoint-up(lg) {
+    @include make-col(2);
+  }
+}
+
+.note-item-panel {
+  @include make-col-ready();
+
+  @include media-breakpoint-up(sm) {
+    @include make-col(6);
+  }
+
+  @include media-breakpoint-up(lg) {
+    @include make-col(8);
+  }
+}
+
+.notebook-list-item {
+  display: block;
+  padding: 2px 5px;
+  color: #212529 !important;
+
+  &.-selected {
+    background-color: #f8f9fa;
+  }
+}
+
+.note-list-item {
+  display: block;
+  padding: 2px 5px;
+  color: #212529 !important;
+
+  &.-selected {
+    background-color: #f8f9fa;
+  }
+}
+
+.note-item {
+  .content {
+    height: 300px;
+  }
+}

@@ -25,18 +25,18 @@ web_1  | info: Microsoft.Hosting.Lifetime[0]
 web_1  |       Now listening on: http://[::]:8000
 ```
 - Open a browser and navigate to http://localhost:8000/
-- You will find a simple note app that you can 
-  - Add a new notebook which is a group/container of each note  
+- You will find a simple note app that you can
+  - Add a new notebook which is a group/container of each note
   - Add a new note.
   - Add a new tag.
   - Update/Delete notebook, note and tag.
 
 ## Hot reload
-- Edit some C# source code in `app` folder. 
+- Edit some C# source code in `app` folder.
 - Code will be compile automatically.
 - Refresh a browser and see what you have changed.
 
-## EF Note in a browser 
+## EF Note in a browser
 ![ef-note-animated-screenshot.gif](ef-note-animated-screenshot.gif)
 
 ## Release compose for testing only
@@ -50,15 +50,15 @@ docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-co
 - Create Azure App Service with a container
 - Use DockerHub registry and `mcr.microsoft.com/dotnet/samples:aspnetapp` image
 - Check log in deployment, open a browser and navigate to https://{your-app-service-name}.azurewebsites.net/
-- You should find an example ASP.NET Core MVC app 
+- You should find an example ASP.NET Core MVC app
 
-### Set some configurations 
+### Set some configurations
 - Set these configurations to your app service:
-  - `WEBSITE_WEBDEPLOY_USE_SCM` 
+  - `WEBSITE_WEBDEPLOY_USE_SCM`
     - `true`
-  - `WEBSITES_PORT` 
+  - `WEBSITES_PORT`
     - `8000`
-  - `CONNECTIONSTRINGS__DEFAULTCONNECTION` 
+  - `CONNECTIONSTRINGS__DEFAULTCONNECTION`
     - `Server={your-server-name}.mysql.database.azure.com; Port=3306; Database={your-database-name}; Uid={your-username}@{your-server-name}; Pwd={your-password}; SslMode=Preferred;CharSet=utf8mb4;`
 - More details for Npgsql SSL connection https://www.npgsql.org/doc/security.html#encryption-ssltls
 
@@ -89,22 +89,50 @@ docker-compose up db
 ## Presentation
 - [Link to Google slide presentation](https://docs.google.com/presentation/d/1OkDfotFvxa4PNxIj2VksGwfjXWVOAOURDJ59fUcXzzo/edit)
 
-## TODO
-- [ ] Improve code quality
-- [ ] Use async/await
+## In memory creative
 
-## Database migration
-- Additional required package 
-  - dotnet add Microsoft.EntityFrameworkCore.Design
-- Create your first migration 
+```sh
+dotnet add package Microsoft.EntityFrameworkCore.InMemory
 ```
-dotnet ef migrations add InitialCreate 
+
+## Create empty solution file
+```sh
+dotnet new sln --name Codesanook.EFNote
 ```
-- Apply migrations to a database
+
+## Add existing project to a solution file
+```sh
+dotnet sln add ./Codesanook.EFNote/Codesanook.EFNote.csproj
 ```
-dotnet ef database update
-```
-- Remove migration
-```
-dotnet ef migrations remove
-```
+
+## Work with database migration
+- CD to root of the project
+  ```sh
+  cd src/Codesanook.EFNote
+  ```
+- Install additional required package.
+  ```sh
+  dotnet add Microsoft.EntityFrameworkCore.Design
+  ```
+- Create your first migration file.
+  ```sh
+  dotnet ef migrations add InitialCreate
+  ```
+- Apply migrations to a database.
+  ```
+  dotnet ef database update
+  ```
+- Remove migration files.
+  ```
+  dotnet ef migrations remove
+  ```
+- Update the tool
+  ```sh
+  dotnet tool update --global dotnet-ef
+  ```
+
+## TODO
+- [ ] Global exception
+- [ ] Deploy to a cheap MySQL server
+- [x] Improve code quality
+- [x] Use async/await
