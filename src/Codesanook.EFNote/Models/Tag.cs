@@ -8,7 +8,7 @@ namespace Codesanook.EFNote.Models
         public Tag() => Notes = new HashSet<Note>();
 
         [Required]
-        [StringLength(512)]
+        [StringLength(32)]
         public string Name { get; set; }
 
         public virtual ICollection<Note> Notes { get; set; }

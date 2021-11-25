@@ -31,10 +31,12 @@ namespace Codesanook.EFNote
 
             services.AddDbContext<NoteDbContext>(option =>
             {
-                    option
-                        //.UseMySql(connectionString, serverVersion)
-                        .UseSqlServer(connectionString)
-                        .UseSnakeCaseNamingConvention();
+                option
+                    //.UseMySql(connectionString, serverVersion)
+                    .UseSqlServer(connectionString)
+                    .UseSnakeCaseNamingConvention();
+
+                //option.UseCosmos("endpoint", "key", "db-name");
 
                 // if (env.IsDevelopment())
                 // {

@@ -284,3 +284,5 @@ wwwroot/*
 !wwwroot/css
 !wwwroot/favicon.ico
 _site.css
+
+efbundle

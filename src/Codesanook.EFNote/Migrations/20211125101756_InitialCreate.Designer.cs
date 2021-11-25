@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Codesanook.EFNote.Migrations
 {
     [DbContext(typeof(NoteDbContext))]
-    [Migration("20211125093007_InitialCreate")]
+    [Migration("20211125101756_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,11 +35,11 @@ namespace Codesanook.EFNote.Migrations
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)")
+                        .HasMaxLength(1024)
+                        .HasColumnType("nvarchar(1024)")
                         .HasColumnName("content");
 
                     b.Property<DateTime>("CreatedUtc")
-                        .ValueGeneratedOnAddOrUpdate()
                         .HasColumnType("datetime2")
                         .HasColumnName("created_utc");
 
@@ -51,10 +51,20 @@ namespace Codesanook.EFNote.Migrations
                         .HasColumnType("int")
                         .HasColumnName("notebook_id");
 
+                    b.Property<DateTime>("PeriodEnd")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("period_end");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("period_start");
+
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)")
                         .HasColumnName("title");
 
                     b.Property<DateTime?>("UpdatedUtc")
@@ -72,6 +82,17 @@ namespace Codesanook.EFNote.Migrations
                         .HasDatabaseName("ix_note_notebook_id");
 
                     b.ToTable("note", (string)null);
+
+                    b.ToTable(tb => tb.IsTemporal(ttb =>
+                        {
+                            ttb
+                                .HasPeriodStart("PeriodStart")
+                                .HasColumnName("period_start");
+                            ttb
+                                .HasPeriodEnd("PeriodEnd")
+                                .HasColumnName("period_end");
+                        }
+                    ));
                 });
 
             modelBuilder.Entity("Codesanook.EFNote.Models.Notebook", b =>
@@ -106,8 +127,8 @@ namespace Codesanook.EFNote.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(512)
-                        .HasColumnType("nvarchar(512)")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)")
                         .HasColumnName("name");
 
                     b.HasKey("Id")

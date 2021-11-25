@@ -12,15 +12,23 @@ namespace Codesanook.EFNote.Models
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Notebook>()
+            modelBuilder
+                .Entity<Notebook>()
                 .ToTable("notebook")
                 .HasMany(e => e.Notes)
                 .WithOne(e => e.Notebook)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<Tag>().ToTable("tag");
+            modelBuilder
+                .Entity<Tag>()
+                .ToTable("tag");
 
             modelBuilder.ApplyConfiguration(new NoteConfiguration());
+        }
+
+        protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+        {
+            configurationBuilder.Properties<string>().HaveMaxLength(256);
         }
     }
 }

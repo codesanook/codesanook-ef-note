@@ -1,0 +1,4 @@
+dotnet ef migrations bundle
+temporal table
+
+dotnet add package Microsoft.EntityFrameworkCore.Cosmos
