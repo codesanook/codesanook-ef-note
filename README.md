@@ -2,37 +2,32 @@
 
 ## How to run the project locally
 - Fork this project
-- Clone the project to your computer.
-```sh
-git clone git@github.com:{your-github-username}/codesanook-ef-note.git
-```
-!!! Change **{your-github-username}** to your GitHub username
-
+- Clone the project to your computer. !!! Change **{your-github-username}** to your GitHub username.
+  ```sh
+  git clone git@github.com:{your-github-username}/codesanook-ef-note.git
+  ```
 - CD to to the root folder.
-
-```sh
-cd codesanook-ef-note
-```
-
+  ```sh
+  cd codesanook-ef-note
+  ```
 - Launch Docker containers.
-```sh
-docker-compose down --volumes; docker-compose up --build
-```
-
+  ```sh
+  docker compose down --volumes; docker compose up --build
+  ```
 - Wait for a while until you see dotnet watch messages, e.g.
-```sh
-web_1  | info: Microsoft.Hosting.Lifetime[0]
-web_1  |       Now listening on: http://[::]:8000
-```
-- Open a browser and navigate to http://localhost:8000/
-- You will find a simple note app that you can
-  - Add a new notebook which is a group/container of each note
+  ```sh
+  web_1  | info: Microsoft.Hosting.Lifetime[0]
+  web_1  |       Now listening on: http://[::]:8000
+  ```
+- Open a browser and navigate to http://localhost:8000/.
+- You will find a simple note app that you can:
+  - Add a new notebook which is a group/container of each note.
   - Add a new note.
   - Add a new tag.
   - Update/Delete notebook, note and tag.
 
 ## Hot reload
-- Edit some C# source code in `app` folder.
+- Edit some C# source code in `src/Codesanook.EFNote` folder.
 - Code will be compile automatically.
 - Refresh a browser and see what you have changed.
 
@@ -80,7 +75,7 @@ docker-compose down --volumes; docker-compose -f docker-compose.yml -f docker-co
 - Create new commit and push the project to the main branch
 
 ## Debugging
-- CD to `app` folder and launch the app with debugging `.NET Core launch (web)`.
+- CD to `src/Codesanook.EFNote` folder and launch the app with debugging `.NET Core launch (web)`.
 - Start only a database  container at root level folder.
 ```sh
 docker-compose up db
