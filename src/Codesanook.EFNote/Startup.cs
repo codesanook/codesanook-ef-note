@@ -36,7 +36,7 @@ namespace Codesanook.EFNote
                     .UseSqlServer(connectionString)
                     .UseSnakeCaseNamingConvention();
 
-                //option.UseCosmos("endpoint", "key", "db-name");
+                //option.UseCosmos("endpoint", "key", "database-name");
 
                 // if (env.IsDevelopment())
                 // {

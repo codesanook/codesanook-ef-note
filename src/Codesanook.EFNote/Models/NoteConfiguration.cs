@@ -21,8 +21,7 @@ namespace Codesanook.EFNote.Models
             builder
                 .HasMany(e => e.Tags)
                 .WithMany(e => e.Notes)
-                .UsingEntity(j => j
-                .ToTable("note_tag"));
+                .UsingEntity(j => j.ToTable("note_tag"));
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿@using Codesanook.EFNote.Models
-@using Codesanook.EFNote.Controllers
-@model IEnumerable<Notebook>
+﻿@model IEnumerable<NotebookIndexViewModel>
 @{
   ViewData["Title"] = "Notebook - index";
 }
@@ -18,8 +16,10 @@
     <table class="table table-hover">
       <thead>
         <tr>
+          <th>Id</th>
           <th>Name</th>
-          <th># Notes</th>
+          <th>Valid from</th>
+          <th>Valid to</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -27,18 +27,20 @@
         @foreach (var item in Model)
         {
           <tr>
-            <td>@item.Name</td>
-            <td>@item.Notes.Count()</td>
+            <td>@item.Notebook.Id</td>
+            <td>@item.Notebook.Name</td>
+            <td>@item.ValidFrom</td>
+            <td>@item.ValidTo</td>
             <td>
               <a class="btn btn-light" href="@Url.Action(
                   "Edit",
-                  "Notebook", new { id = item.Id}
+                  "Notebook", new { id = item.Notebook.Id}
                 )" role="button">
                 <i class="fa fa-edit"></i> Edit
               </a>
               <a class="btn btn-light" href="@Url.Action(
                   "Delete",
-                  "Notebook", new { id = item.Id}
+                  "Notebook", new { id = item.Notebook.Id}
                   )" role="button">
                 <i class="fa fa-trash"></i> Delete
               </a>

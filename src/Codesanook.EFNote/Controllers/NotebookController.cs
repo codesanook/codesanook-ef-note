@@ -1,7 +1,9 @@
 ﻿using Codesanook.EFNote.Models;
+using Codesanook.EFNote.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,8 +18,14 @@ namespace Codesanook.EFNote.Controllers
         public async Task<IActionResult> IndexAsync()
         {
             var notebooks = await dbContext.Notebooks
-                .Include(b => b.Notes)
+                .TemporalAll()
                 .OrderBy(b => b.Name)
+                .Select(b => new NotebookIndexViewModel()
+                {
+                    Notebook = b,
+                    ValidFrom = EF.Property<DateTime>(b, "PeriodStart"),
+                    ValidTo = EF.Property<DateTime>(b, "PeriodEnd")
+                })
                 .ToListAsync();
 
             return View(notebooks);

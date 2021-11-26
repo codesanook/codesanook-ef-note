@@ -1,1 +1,1 @@
-dotnet run --project ./src/Codesanook.EFNote/Codesanook.EFNote.csproj
+dotnet watch run --project ./src/Codesanook.EFNote/Codesanook.EFNote.csproj

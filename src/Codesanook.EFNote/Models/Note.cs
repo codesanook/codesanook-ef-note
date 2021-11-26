@@ -1,12 +1,16 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
+#pragma warning disable CS8618
 namespace Codesanook.EFNote.Models
 {
+    //[EntityTypeConfiguration(typeof(NoteConfiguration))]
+
     public class Note : EntityBase
     {
+
         public Note() => Tags = new HashSet<Tag>();
         public string Title { get; set; }
         public string Content { get; set; }
@@ -41,3 +45,5 @@ namespace Codesanook.EFNote.Models
         }
     }
 }
+
+#pragma warning restore CS8618

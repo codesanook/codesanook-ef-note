@@ -104,14 +104,35 @@ namespace Codesanook.EFNote.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)")
                         .HasColumnName("name");
+
+                    b.Property<DateTime>("PeriodEnd")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("period_end");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("period_start");
 
                     b.HasKey("Id")
                         .HasName("pk_notebook");
 
                     b.ToTable("notebook", (string)null);
+
+                    b.ToTable(tb => tb.IsTemporal(ttb =>
+                        {
+                            ttb
+                                .HasPeriodStart("PeriodStart")
+                                .HasColumnName("period_start");
+                            ttb
+                                .HasPeriodEnd("PeriodEnd")
+                                .HasColumnName("period_end");
+                        }
+                    ));
                 });
 
             modelBuilder.Entity("Codesanook.EFNote.Models.Tag", b =>
@@ -125,14 +146,35 @@ namespace Codesanook.EFNote.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)")
                         .HasColumnName("name");
+
+                    b.Property<DateTime>("PeriodEnd")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("period_end");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("period_start");
 
                     b.HasKey("Id")
                         .HasName("pk_tag");
 
                     b.ToTable("tag", (string)null);
+
+                    b.ToTable(tb => tb.IsTemporal(ttb =>
+                        {
+                            ttb
+                                .HasPeriodStart("PeriodStart")
+                                .HasColumnName("period_start");
+                            ttb
+                                .HasPeriodEnd("PeriodEnd")
+                                .HasColumnName("period_end");
+                        }
+                    ));
                 });
 
             modelBuilder.Entity("NoteTag", b =>
@@ -145,6 +187,16 @@ namespace Codesanook.EFNote.Migrations
                         .HasColumnType("int")
                         .HasColumnName("tags_id");
 
+                    b.Property<DateTime>("PeriodEnd")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("period_end");
+
+                    b.Property<DateTime>("PeriodStart")
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("datetime2")
+                        .HasColumnName("period_start");
+
                     b.HasKey("NotesId", "TagsId")
                         .HasName("pk_note_tag");
 
@@ -152,6 +204,17 @@ namespace Codesanook.EFNote.Migrations
                         .HasDatabaseName("ix_note_tag_tags_id");
 
                     b.ToTable("note_tag", (string)null);
+
+                    b.ToTable(tb => tb.IsTemporal(ttb =>
+                        {
+                            ttb
+                                .HasPeriodStart("PeriodStart")
+                                .HasColumnName("period_start");
+                            ttb
+                                .HasPeriodEnd("PeriodEnd")
+                                .HasColumnName("period_end");
+                        }
+                    ));
                 });
 
             modelBuilder.Entity("Codesanook.EFNote.Models.Note", b =>
