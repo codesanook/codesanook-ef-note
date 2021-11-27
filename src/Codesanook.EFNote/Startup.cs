@@ -73,7 +73,7 @@ namespace Codesanook.EFNote
                 // Auto run database migration when start a website
                 if (context.Database.ProviderName != "Microsoft.EntityFrameworkCore.InMemory")
                 {
-                    context.Database.Migrate();
+                    // context.Database.Migrate();
                 }
             }
 

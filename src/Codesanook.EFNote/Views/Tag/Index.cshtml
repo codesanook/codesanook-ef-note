@@ -19,27 +19,29 @@
     <table class="table table-hover">
       <thead>
         <tr>
+          <th>Id</th>
           <th>Name</th>
-          <th># Notes</th>
+          <th># of notes</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        @foreach (var item in Model)
+        @foreach (var tag in Model)
         {
           <tr>
-            <td>@item.Name</td>
-            <td>@item.Notes.Count()</td>
+            <td>@tag.Id</td>
+            <td>@tag.Name</td>
+            <td>@tag.Notes.Count()</td>
             <td>
               <a class="btn btn-light" href="@Url.Action(
                   "Edit",
-                  "Tag", new { id = item.Id}
+                  "Tag", new { id = tag.Id}
                 )" role="button">
                 <i class="fa fa-edit"></i> Edit
               </a>
               <a class="btn btn-light" href="@Url.Action(
                   "Delete",
-                  "Tag", new { id = item.Id}
+                  "Tag", new { id = tag.Id}
                 )" role="button">
                 <i class="fa fa-trash"></i> Delete
               </a>

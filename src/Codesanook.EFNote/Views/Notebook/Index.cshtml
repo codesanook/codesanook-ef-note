@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NotebookIndexViewModel>
+﻿@model IEnumerable<Notebook>
 @{
   ViewData["Title"] = "Notebook - index";
 }
@@ -7,6 +7,9 @@
   <div class="col-12">
     <a class="btn btn-light" href="@Url.Action("Create")" role="button">
       <i class="fa fa-plus-circle"></i> New
+    </a>
+    <a class="btn btn-light" href="@Url.Action("ChangedLog")" role="button">
+      <i class="fa fa-clock"></i> Changed log
     </a>
   </div>
 </div>
@@ -18,29 +21,27 @@
         <tr>
           <th>Id</th>
           <th>Name</th>
-          <th>Valid from</th>
-          <th>Valid to</th>
+          <th># of notes</th>
           <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        @foreach (var item in Model)
+        @foreach (var notebook in Model)
         {
           <tr>
-            <td>@item.Notebook.Id</td>
-            <td>@item.Notebook.Name</td>
-            <td>@item.ValidFrom</td>
-            <td>@item.ValidTo</td>
+            <td>@notebook.Id</td>
+            <td>@notebook.Name</td>
+            <td>@notebook.Notes.Count()</td>
             <td>
               <a class="btn btn-light" href="@Url.Action(
                   "Edit",
-                  "Notebook", new { id = item.Notebook.Id}
+                  "Notebook", new { id = notebook.Id}
                 )" role="button">
                 <i class="fa fa-edit"></i> Edit
               </a>
               <a class="btn btn-light" href="@Url.Action(
                   "Delete",
-                  "Notebook", new { id = item.Notebook.Id}
+                  "Notebook", new { id = notebook.Id}
                   )" role="button">
                 <i class="fa fa-trash"></i> Delete
               </a>

@@ -21,7 +21,7 @@ namespace Codesanook.EFNote.Models
 
             modelBuilder
                 .Entity<Tag>()
-                .ToTable("tag", t => t.IsTemporal());
+                .ToTable("tag");
 
             modelBuilder.ApplyConfiguration(new NoteConfiguration());
         }

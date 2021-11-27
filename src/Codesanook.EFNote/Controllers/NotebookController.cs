@@ -12,22 +12,30 @@ namespace Codesanook.EFNote.Controllers
     public class NotebookController : Controller
     {
         private NoteDbContext dbContext;
-
         public NotebookController(NoteDbContext dbContext) => this.dbContext = dbContext;
 
         public async Task<IActionResult> IndexAsync()
         {
             var notebooks = await dbContext.Notebooks
+                .Include(b => b.Notes)
+                .OrderBy(b => b.Name)
+                .ToListAsync();
+
+            return View(notebooks);
+        }
+
+        public async Task<IActionResult> ChangedLog()
+        {
+            var notebooks = await dbContext.Notebooks
                 .TemporalAll()
                 .OrderBy(b => b.Name)
-                .Select(b => new NotebookIndexViewModel()
+                .Select(b => new NotebookChangedLogViewModel()
                 {
                     Notebook = b,
                     ValidFrom = EF.Property<DateTime>(b, "PeriodStart"),
                     ValidTo = EF.Property<DateTime>(b, "PeriodEnd")
                 })
                 .ToListAsync();
-
             return View(notebooks);
         }
 

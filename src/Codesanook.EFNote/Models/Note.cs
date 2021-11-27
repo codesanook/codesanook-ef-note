@@ -10,7 +10,6 @@ namespace Codesanook.EFNote.Models
 
     public class Note : EntityBase
     {
-
         public Note() => Tags = new HashSet<Tag>();
         public string Title { get; set; }
         public string Content { get; set; }

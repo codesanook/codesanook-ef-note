@@ -13,9 +13,11 @@ namespace Codesanook.EFNote
             .ConfigureWebHostDefaults(webBuilder =>
             {
                 webBuilder.UseStartup<Startup>();
-            })
-            .ConfigureServices(
-                services => services.AddHostedService<WarmupService>()
-            );
+            });
+
+        // Register warmup service
+        // .ConfigureServices(
+        //     services => services.AddHostedService<WarmupService>()
+        // );
     }
 }

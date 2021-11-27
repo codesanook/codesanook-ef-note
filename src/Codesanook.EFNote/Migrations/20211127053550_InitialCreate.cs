@@ -1,4 +1,6 @@
-﻿using System;
+﻿// dotnet ef migrations add InitialCreate
+
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
@@ -41,25 +43,12 @@ namespace Codesanook.EFNote.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false),
-                    period_end = table.Column<DateTime>(type: "datetime2", nullable: false)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start"),
-                    period_start = table.Column<DateTime>(type: "datetime2", nullable: false)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start")
+                    name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_tag", x => x.id);
-                })
-                .Annotation("SqlServer:IsTemporal", true)
-                .Annotation("SqlServer:TemporalHistoryTableName", "tagHistory")
-                .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start");
+                });
 
             migrationBuilder.CreateTable(
                 name: "note",
@@ -73,15 +62,7 @@ namespace Codesanook.EFNote.Migrations
                     updated_utc = table.Column<DateTime>(type: "datetime2", nullable: true),
                     is_deleted = table.Column<bool>(type: "bit", nullable: false),
                     view_count = table.Column<int>(type: "int", nullable: false),
-                    notebook_id = table.Column<int>(type: "int", nullable: false),
-                    period_end = table.Column<DateTime>(type: "datetime2", nullable: false)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start"),
-                    period_start = table.Column<DateTime>(type: "datetime2", nullable: false)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start")
+                    notebook_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,27 +73,14 @@ namespace Codesanook.EFNote.Migrations
                         principalTable: "notebook",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("SqlServer:IsTemporal", true)
-                .Annotation("SqlServer:TemporalHistoryTableName", "noteHistory")
-                .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start");
+                });
 
             migrationBuilder.CreateTable(
                 name: "note_tag",
                 columns: table => new
                 {
                     notes_id = table.Column<int>(type: "int", nullable: false),
-                    tags_id = table.Column<int>(type: "int", nullable: false),
-                    period_end = table.Column<DateTime>(type: "datetime2", nullable: false)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start"),
-                    period_start = table.Column<DateTime>(type: "datetime2", nullable: false)
-                        .Annotation("SqlServer:IsTemporal", true)
-                        .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                        .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start")
+                    tags_id = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -129,12 +97,7 @@ namespace Codesanook.EFNote.Migrations
                         principalTable: "tag",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
-                })
-                .Annotation("SqlServer:IsTemporal", true)
-                .Annotation("SqlServer:TemporalHistoryTableName", "note_tagHistory")
-                .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start");
+                });
 
             migrationBuilder.CreateIndex(
                 name: "ix_note_notebook_id",
@@ -150,28 +113,13 @@ namespace Codesanook.EFNote.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "note_tag")
-                .Annotation("SqlServer:IsTemporal", true)
-                .Annotation("SqlServer:TemporalHistoryTableName", "note_tagHistory")
-                .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start");
+                name: "note_tag");
 
             migrationBuilder.DropTable(
-                name: "note")
-                .Annotation("SqlServer:IsTemporal", true)
-                .Annotation("SqlServer:TemporalHistoryTableName", "noteHistory")
-                .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start");
+                name: "note");
 
             migrationBuilder.DropTable(
-                name: "tag")
-                .Annotation("SqlServer:IsTemporal", true)
-                .Annotation("SqlServer:TemporalHistoryTableName", "tagHistory")
-                .Annotation("SqlServer:TemporalHistoryTableSchema", null)
-                .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
-                .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start");
+                name: "tag");
 
             migrationBuilder.DropTable(
                 name: "notebook")

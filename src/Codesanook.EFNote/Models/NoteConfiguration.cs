@@ -8,7 +8,7 @@ namespace Codesanook.EFNote.Models
         public void Configure(EntityTypeBuilder<Note> builder)
         {
             builder
-                .ToTable("note", t => t.IsTemporal())
+                .ToTable("note")
                 .Property(e => e.Title)
                 .IsRequired()
                 .HasMaxLength(256);
