@@ -1,6 +1,5 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
 const entryFile = [__dirname, 'scss', 'site'];
 const outputPath = [__dirname, 'wwwroot', 'css'];
 

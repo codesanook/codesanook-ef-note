@@ -10,7 +10,7 @@ services:
       MYSQL_ROOT_PASSWORD: MySQL123!
       # Set permission of this user in "set-database-permission.sql"
       MYSQL_USER: sa
-      MYSQL_PASSWORD: 12345Abc$$ # Escape $ with $$
+      MYSQL_PASSWORD: 12345Abc%
       MYSQL_DATABASE: ef-note
     ports:
       - 3306:3306
@@ -34,7 +34,7 @@ services:
     networks:
       - compose_network
 
-  # image: codesanook-ef-note:latest costom image is advanced topic, put more detail in README.md
+  # image: codesanook-ef-note:latest which is a custom image. It is advanced topic, put more detail in README.md
   web:
     build:
       context: .
@@ -43,7 +43,7 @@ services:
     image: codesanook-ef-note:latest
     container_name: ${COMPOSE_PROJECT_NAME:?err}_web
     environment:
-      ConnectionStrings__DefaultConnection: Server=db; Database=ef-note; Uid=sa; Pwd=12345Abc$$; CharSet=utf8mb4;
+      ConnectionStrings__DefaultConnection: Server=db; Database=ef-note; Uid=sa; Pwd=12345Abc%; CharSet=utf8mb4;
       # https://www.npgsql.org/doc/connection-string-parameters.html
       ASPNETCORE_URLS: http://0.0.0.0:8000 # A server will be reachable with any IPs a specific port number.
       DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSE: 1 # We can't lanuch a browser inside a Docker container for dotnet watch run
@@ -57,7 +57,7 @@ services:
   mssql:
     build:
       context: .
-      dockerfile: Dockerfile.mssql
+      dockerfile: Dockerfile.mssql # Use custom image
     image: ${COMPOSE_PROJECT_NAME:?err}_mssql
     container_name: ${COMPOSE_PROJECT_NAME:?err}_mssql
     ports:
@@ -73,7 +73,7 @@ services:
       # https://docs.microsoft.com/en-us/sql/linux/sql-server-linux-configure-environment-variables?view=sql-server-ver15#environment-variables
       - ACCEPT_EULA=Y
       - MSSQL_PID=Express
-      - MSSQL_SA_PASSWORD=12345Abc$$ # Escape $ with $$
+      - MSSQL_SA_PASSWORD=12345Abc%
 
       - MSSQL_DATA_DIR=/var/opt/mssql/data
       - MSSQL_LOG_DIR=/var/opt/mssql/log

@@ -3,7 +3,6 @@
 # https://hub.docker.com/_/microsoft-mssql-server
 FROM mcr.microsoft.com/mssql/server:2019-latest
 EXPOSE 1433
-WORKDIR /app
 
 COPY ./entrypoint.mssql.sh ./
 COPY ./initialize.mssql.sh ./
