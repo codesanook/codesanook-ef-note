@@ -16,6 +16,10 @@ namespace Codesanook.EFNote.Controllers
 
         public async Task<IActionResult> IndexAsync()
         {
+            var notebook = await dbContext.Notebooks
+                .Where(n => n.Metadata.Color == "#F00")
+                .ToListAsync();
+
             var notebooks = await dbContext.Notebooks
                 .Include(b => b.Notes)
                 .OrderBy(b => b.Name)
@@ -47,7 +51,6 @@ namespace Codesanook.EFNote.Controllers
             notebook.Name = notebook.Name.Trim();
             await dbContext.Notebooks.AddAsync(notebook);
             await dbContext.SaveChangesAsync();
-
             return RedirectToAction("Index");
         }
 
