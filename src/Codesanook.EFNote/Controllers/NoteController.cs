@@ -150,16 +150,12 @@ namespace Codesanook.EFNote.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteAsync(int id, IFormCollection _)
         {
-            var note = await dbContext.Notes
-                .Include(n => n.Tags)
-                .SingleAsync(n => n.Id == id);
+            // ExecuteDeleteAsync
+            // var note = await dbContext.Notes.SingleAsync(n => n.Id == id);
+            // dbContext.Notes.Remove(note);
 
-            foreach (var tag in note.Tags)
-            {
-                note.Tags.Remove(tag);
-            }
+            await dbContext.Notes.Where(n => n.Id == id).ExecuteDeleteAsync();
 
-            dbContext.Notes.Remove(note);
             await dbContext.SaveChangesAsync();
 
             return RedirectToAction("Index");

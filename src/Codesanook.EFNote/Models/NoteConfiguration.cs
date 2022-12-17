@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Collections.Generic;
 
 namespace Codesanook.EFNote.Models
 {
@@ -22,6 +23,10 @@ namespace Codesanook.EFNote.Models
                 .HasMany(e => e.Tags)
                 .WithMany(e => e.Notes)
                 .UsingEntity(j => j.ToTable("note_tag"));
+                // .UsingEntity<Dictionary<string, object>>(
+                //     "note_tag"
+                // );
+
         }
     }
 }

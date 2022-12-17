@@ -17,10 +17,10 @@ namespace Codesanook.EFNote.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.0")
+                .HasAnnotation("ProductVersion", "7.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
             modelBuilder.Entity("Codesanook.EFNote.Models.Note", b =>
                 {
@@ -29,7 +29,7 @@ namespace Codesanook.EFNote.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Content")
                         .IsRequired()
@@ -79,7 +79,12 @@ namespace Codesanook.EFNote.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)")
+                        .HasColumnName("description");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -103,15 +108,15 @@ namespace Codesanook.EFNote.Migrations
                     b.ToTable("notebook", (string)null);
 
                     b.ToTable(tb => tb.IsTemporal(ttb =>
-                        {
-                            ttb
-                                .HasPeriodStart("PeriodStart")
-                                .HasColumnName("period_start");
-                            ttb
-                                .HasPeriodEnd("PeriodEnd")
-                                .HasColumnName("period_end");
-                        }
-                    ));
+                            {
+                                ttb.UseHistoryTable("notebookHistory");
+                                ttb
+                                    .HasPeriodStart("PeriodStart")
+                                    .HasColumnName("period_start");
+                                ttb
+                                    .HasPeriodEnd("PeriodEnd")
+                                    .HasColumnName("period_end");
+                            }));
                 });
 
             modelBuilder.Entity("Codesanook.EFNote.Models.Tag", b =>
@@ -121,7 +126,7 @@ namespace Codesanook.EFNote.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -164,6 +169,34 @@ namespace Codesanook.EFNote.Migrations
                         .HasConstraintName("fk_note_notebook_notebook_id");
 
                     b.Navigation("Notebook");
+                });
+
+            modelBuilder.Entity("Codesanook.EFNote.Models.Notebook", b =>
+                {
+                    b.OwnsOne("Codesanook.EFNote.Models.NoteBookMetadata", "Metadata", b1 =>
+                        {
+                            b1.Property<int>("NotebookId")
+                                .HasColumnType("int")
+                                .HasColumnName("id");
+
+                            b1.Property<string>("Color")
+                                .IsRequired()
+                                .HasMaxLength(32)
+                                .HasColumnType("nvarchar(32)")
+                                .HasColumnName("metadata_color");
+
+                            b1.HasKey("NotebookId");
+
+                            b1.ToTable("notebook");
+
+                            b1.ToJson("Metadata");
+
+                            b1.WithOwner()
+                                .HasForeignKey("NotebookId")
+                                .HasConstraintName("fk_notebook_notebook_id");
+                        });
+
+                    b.Navigation("Metadata");
                 });
 
             modelBuilder.Entity("NoteTag", b =>

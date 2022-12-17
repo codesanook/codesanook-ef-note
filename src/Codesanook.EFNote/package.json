@@ -11,6 +11,10 @@
     "name": "Codesanook Team"
   },
   "license": "MIT",
+  "dependencies": {
+    "bootstrap": "^4.3.1",
+    "font-awesome": "^4.7.0"
+  },
   "devDependencies": {
     "autoprefixer": "^9.6.0",
     "file-loader": "^4.0.0",
@@ -23,9 +27,5 @@
     "precss": "^4.0.0",
     "postcss-loader": "^3.0.0",
     "resolve-url-loader": "^3.1.0"
-  },
-  "dependencies": {
-    "bootstrap": "^4.3.1",
-    "font-awesome": "^4.7.0"
   }
 }

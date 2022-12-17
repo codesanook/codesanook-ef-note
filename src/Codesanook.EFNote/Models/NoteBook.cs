@@ -6,7 +6,13 @@ namespace Codesanook.EFNote.Models
     {
         public Notebook() => Notes = new HashSet<Note>();
         public string Name { get; set; }
-
+        public string? Description { get; set; }
         public virtual ICollection<Note> Notes { get; set; }
+        public NoteBookMetadata? Metadata { get; set; }
+    }
+
+    public class NoteBookMetadata
+    {
+        public string Color { get; set; }
     }
 }

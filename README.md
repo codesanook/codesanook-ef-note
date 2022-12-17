@@ -105,31 +105,32 @@ dotnet sln add ./Codesanook.EFNote/Codesanook.EFNote.csproj
 ## Work with database migration
 - CD to root of the project
   ```sh
-  cd src/Codesanook.EFNote
+  $ cd src/Codesanook.EFNote
   ```
 - Install additional required package.
   ```sh
-  dotnet add Microsoft.EntityFrameworkCore.Design
+  $ dotnet add Microsoft.EntityFrameworkCore.Design
   ```
 - Create your first migration file.
   ```sh
-  dotnet ef migrations add InitialCreate
+  $ dotnet ef migrations add InitialCreate
   ```
 - Apply migrations to a database.
-  ```
-  dotnet ef database update
+  ```sh
+  $ dotnet ef database update
   ```
 - Remove migration files.
-  ```
-  dotnet ef migrations remove
+  ```sh
+  $ dotnet ef migrations remove
   ```
 - Update the tool
   ```sh
-  dotnet tool update --global dotnet-ef
+  $ dotnet tool update --global dotnet-ef
   ```
 
 ## TODO
 - [ ] Global exception
 - [ ] Deploy to a cheap MySQL server
+- [ ] Better logging to console
 - [x] Improve code quality
 - [x] Use async/await

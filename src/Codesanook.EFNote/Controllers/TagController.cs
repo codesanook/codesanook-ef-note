@@ -47,8 +47,15 @@ namespace Codesanook.EFNote.Controllers
         {
             var existingTag = await dbContext.Tags.FindAsync(id);
             existingTag.Name = GetFormatTagName(model.Name);
-            await dbContext.SaveChangesAsync();
 
+            var newTagName = GetFormatTagName(model.Name);
+            await dbContext.Tags
+                .Where(t => t.Id == id)
+                .ExecuteUpdateAsync(
+                    s => s.SetProperty(t => t.Name, _ => newTagName)
+                );
+
+            await dbContext.SaveChangesAsync();
             return RedirectToAction("index");
         }
 
