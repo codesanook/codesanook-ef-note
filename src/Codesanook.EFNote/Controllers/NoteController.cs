@@ -157,7 +157,6 @@ namespace Codesanook.EFNote.Controllers
             await dbContext.Notes.Where(n => n.Id == id).ExecuteDeleteAsync();
 
             await dbContext.SaveChangesAsync();
-
             return RedirectToAction("Index");
         }
 

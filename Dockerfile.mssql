@@ -5,14 +5,12 @@ FROM mcr.microsoft.com/mssql/server:2019-latest
 EXPOSE 1433
 
 COPY ./entrypoint.mssql.sh ./
-COPY ./initialize.mssql.sh ./
 COPY ./init-db.mssql.sql ./
 
 # https://dbafromthecold.com/2019/11/18/using-volumes-in-sql-server-2019-non-root-containers/
 USER root
 
 RUN chmod +x ./entrypoint.mssql.sh
-RUN chmod +x ./initialize.mssql.sh
 
 RUN mkdir -p /var/opt/mssql/data && chown mssql /var/opt/mssql/data
 RUN mkdir -p /var/opt/mssql/log && chown mssql /var/opt/mssql/log
