@@ -87,7 +87,6 @@ namespace Codesanook.EFNote.Migrations
                         .HasColumnName("description");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)")
                         .HasColumnName("name");
@@ -129,7 +128,6 @@ namespace Codesanook.EFNote.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasMaxLength(32)
                         .HasColumnType("nvarchar(32)")
                         .HasColumnName("name");
@@ -180,7 +178,6 @@ namespace Codesanook.EFNote.Migrations
                                 .HasColumnName("id");
 
                             b1.Property<string>("Color")
-                                .IsRequired()
                                 .HasMaxLength(32)
                                 .HasColumnType("nvarchar(32)")
                                 .HasColumnName("metadata_color");
@@ -189,7 +186,7 @@ namespace Codesanook.EFNote.Migrations
 
                             b1.ToTable("notebook");
 
-                            b1.ToJson("Metadata");
+                            b1.ToJson("metadata");
 
                             b1.WithOwner()
                                 .HasForeignKey("NotebookId")

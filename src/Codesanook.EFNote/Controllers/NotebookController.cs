@@ -50,6 +50,7 @@ namespace Codesanook.EFNote.Controllers
         {
             notebook.Name = notebook.Name.Trim();
             await dbContext.Notebooks.AddAsync(notebook);
+
             await dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
@@ -63,11 +64,12 @@ namespace Codesanook.EFNote.Controllers
         [HttpPost]
         public async Task<IActionResult> EditAsync(int id, Notebook notebook)
         {
-            notebook.Name = notebook.Name.Trim();
+             // ExecuteUpdate fails when target entity has an owned entity #28727
+             // https://github.com/dotnet/efcore/issues/28727
             var existingNotebook = await dbContext.Notebooks.FindAsync(id);
-            existingNotebook.Name = notebook.Name;
-            await dbContext.SaveChangesAsync();
+            existingNotebook.Name = notebook.Name.Trim();
 
+            await dbContext.SaveChangesAsync();
             return RedirectToAction("Index");
         }
 

@@ -113,7 +113,7 @@ dotnet sln add ./Codesanook.EFNote/Codesanook.EFNote.csproj
   ```
 - Create your first migration file.
   ```sh
-  $ dotnet ef migrations add InitialCreate
+  $ dotnet ef migrations add InitialCreate --project src/Codesanook.EFNote
   ```
 - Apply migrations to a database.
   ```sh
@@ -134,3 +134,7 @@ dotnet sln add ./Codesanook.EFNote/Codesanook.EFNote.csproj
 - [ ] Better logging to console
 - [x] Improve code quality
 - [x] Use async/await
+
+## Issues
+- [ ] ExecuteUpdate fails when target entity has an owned entity
+- [ ] Can't view change log, temporal table

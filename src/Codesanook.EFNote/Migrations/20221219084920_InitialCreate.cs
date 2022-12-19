@@ -22,7 +22,7 @@ namespace Codesanook.EFNote.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start"),
-                    name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false)
+                    name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "notebookHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -46,7 +46,7 @@ namespace Codesanook.EFNote.Migrations
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
                         .Annotation("SqlServer:TemporalPeriodEndColumnName", "period_end")
                         .Annotation("SqlServer:TemporalPeriodStartColumnName", "period_start"),
-                    Metadata = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    metadata = table.Column<string>(type: "nvarchar(max)", nullable: true)
                         .Annotation("SqlServer:IsTemporal", true)
                         .Annotation("SqlServer:TemporalHistoryTableName", "notebookHistory")
                         .Annotation("SqlServer:TemporalHistoryTableSchema", null)
@@ -69,7 +69,7 @@ namespace Codesanook.EFNote.Migrations
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: false)
+                    name = table.Column<string>(type: "nvarchar(32)", maxLength: 32, nullable: true)
                 },
                 constraints: table =>
                 {

@@ -20,10 +20,11 @@ namespace Codesanook.EFNote.Models
                 .OnDelete(DeleteBehavior.Cascade);
 
             // Map Metadata to JSON column
+            // https://learn.microsoft.com/en-us/ef/core/what-is-new/ef-core-7.0/whatsnew#json-columns
             modelBuilder
                 .Entity<Notebook>()
                 .OwnsOne(e => e.Metadata)
-                .ToJson();
+                .ToJson("metadata");
 
             modelBuilder
                 .Entity<Tag>()
