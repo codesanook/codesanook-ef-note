@@ -7,18 +7,12 @@ using Microsoft.EntityFrameworkCore;
 #pragma warning disable CS8618
 namespace Codesanook.EFNote.Models
 {
-    //[EntityTypeConfiguration(typeof(NoteConfiguration))]
-
     public class Note : EntityBase
     {
         public Note() => Tags = new HashSet<Tag>();
         public string Title { get; set; }
         public string Content { get; set; }
-
-        // [DatabaseGenerated(DatabaseGeneratedOption.Computed)] does not work now for MS SQL 2016 + EF Core 6
         public DateTime CreatedUtc { get; set; }
-
-        [NotMapped]
         public List<DateTime>? UtcUpdates { get; set; }
         public bool IsDeleted { get; set; }
         public int ViewCount { get; set; }

@@ -32,6 +32,7 @@ namespace Codesanook.EFNote
             {
                 option
                     .UseSqlServer(connectionString)
+                    .EnableSensitiveDataLogging()
                     .UseSnakeCaseNamingConvention();
             });
 

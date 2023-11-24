@@ -23,8 +23,11 @@ namespace Codesanook.EFNote.Models
             // https://learn.microsoft.com/en-us/ef/core/what-is-new/ef-core-7.0/whatsnew#json-columns
             modelBuilder
                 .Entity<Notebook>()
-                .OwnsOne(e => e.Settings)
-                .ToJson("metadata");
+                .OwnsOne(e => e.Settings, s =>
+                {
+                    s.ToJson();
+                    s.OwnsMany(e=> e.SupportedFileFormats);
+                });
 
             modelBuilder
                 .Entity<Tag>()

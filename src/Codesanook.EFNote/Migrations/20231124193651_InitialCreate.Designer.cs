@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Codesanook.EFNote.Migrations
 {
     [DbContext(typeof(NoteDbContext))]
-    [Migration("20231124172724_InitialCreate")]
+    [Migration("20231124193651_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace Codesanook.EFNote.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "7.0.1")
+                .HasAnnotation("ProductVersion", "8.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -57,6 +57,10 @@ namespace Codesanook.EFNote.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("title");
+
+                    b.Property<string>("UtcUpdates")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("utc_updates");
 
                     b.Property<int>("ViewCount")
                         .HasColumnType("int")
@@ -185,11 +189,40 @@ namespace Codesanook.EFNote.Migrations
 
                             b1.ToTable("notebook");
 
-                            b1.ToJson("metadata");
+                            b1.ToJson("Settings");
 
                             b1.WithOwner()
                                 .HasForeignKey("NotebookId")
                                 .HasConstraintName("fk_notebook_notebook_id");
+
+                            b1.OwnsMany("Codesanook.EFNote.Models.SupportedFileFormat", "SupportedFileFormats", b2 =>
+                                {
+                                    b2.Property<int>("SettingsNotebookId")
+                                        .HasColumnType("int");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("int");
+
+                                    b2.Property<string>("Editor")
+                                        .HasMaxLength(32)
+                                        .HasColumnType("nvarchar(32)");
+
+                                    b2.Property<string>("FileFormat")
+                                        .HasMaxLength(32)
+                                        .HasColumnType("nvarchar(32)");
+
+                                    b2.HasKey("SettingsNotebookId", "Id")
+                                        .HasName("pk_notebook");
+
+                                    b2.ToTable("notebook");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("SettingsNotebookId")
+                                        .HasConstraintName("fk_notebook_notebook_settings_notebook_id");
+                                });
+
+                            b1.Navigation("SupportedFileFormats");
                         });
 
                     b.Navigation("Settings");
