@@ -11,18 +11,19 @@ namespace Codesanook.EFNote.Models
             {
                 return true;
             }
-            else if (obj == null || other == null)
+
+            if (obj == null || other == null)
             {
                 return false;
             }
-            else if (obj.Name == other.Name)
+
+            if (obj.Name == other.Name)
             {
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
+
         }
 
         public int GetHashCode([DisallowNull] Tag obj)

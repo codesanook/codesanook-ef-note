@@ -55,10 +55,6 @@ namespace Codesanook.EFNote.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasColumnName("title");
 
-                    b.Property<DateTime?>("UpdatedUtc")
-                        .HasColumnType("datetime2")
-                        .HasColumnName("updated_utc");
-
                     b.Property<int>("ViewCount")
                         .HasColumnType("int")
                         .HasColumnName("view_count");
@@ -171,16 +167,16 @@ namespace Codesanook.EFNote.Migrations
 
             modelBuilder.Entity("Codesanook.EFNote.Models.Notebook", b =>
                 {
-                    b.OwnsOne("Codesanook.EFNote.Models.NoteBookMetadata", "Metadata", b1 =>
+                    b.OwnsOne("Codesanook.EFNote.Models.Settings", "Settings", b1 =>
                         {
                             b1.Property<int>("NotebookId")
                                 .HasColumnType("int")
                                 .HasColumnName("id");
 
-                            b1.Property<string>("Color")
+                            b1.Property<string>("ColorTheme")
                                 .HasMaxLength(32)
                                 .HasColumnType("nvarchar(32)")
-                                .HasColumnName("metadata_color");
+                                .HasColumnName("settings_color_theme");
 
                             b1.HasKey("NotebookId");
 
@@ -193,7 +189,7 @@ namespace Codesanook.EFNote.Migrations
                                 .HasConstraintName("fk_notebook_notebook_id");
                         });
 
-                    b.Navigation("Metadata");
+                    b.Navigation("Settings");
                 });
 
             modelBuilder.Entity("NoteTag", b =>

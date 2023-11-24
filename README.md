@@ -4,15 +4,15 @@
 - Fork this project
 - Clone the project to your computer. !!! Change **{your-github-username}** to your GitHub username.
   ```sh
-  git clone git@github.com:{your-github-username}/codesanook-ef-note.git
+  $ git clone git@github.com:{your-github-username}/codesanook-ef-note.git
   ```
 - CD to to the root folder.
   ```sh
-  cd codesanook-ef-note
+  $ cd codesanook-ef-note
   ```
 - Launch Docker containers.
   ```sh
-  docker compose down --volumes; docker compose up --build
+  $ docker compose down --volumes; docker compose up --build
   ```
 - Wait for a while until you see dotnet watch messages, e.g.
   ```sh

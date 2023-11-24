@@ -1,38 +1,6 @@
 version: "3.8"
 
 services:
-  mysql:
-    image: mysql:5.7
-    container_name: ${COMPOSE_PROJECT_NAME:?err}_mysql
-    restart: always
-    environment:
-      # TODO move password to a secret file
-      MYSQL_ROOT_PASSWORD: MySQL123!
-      # Set permission of this user in "set-database-permission.sql"
-      MYSQL_USER: sa
-      MYSQL_PASSWORD: 12345Abc%
-      MYSQL_DATABASE: ef-note
-    ports:
-      - 3306:3306
-    healthcheck:
-      test: mysqladmin ping -h db -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
-      timeout: 10s
-      retries: 10
-    volumes:
-      # Use name volumes, managed by Docker for local development
-      - mysql-data:/var/lib/mysql
-      - mysql-logs:/var/log/mysql
-
-      # Map all files in init folder as initialize database files,
-      # Files will be executed in alphabetical order.
-      - ./init-db.mysql.sql:/docker-entrypoint-initdb.d/init-db.mysql.sql
-
-      # Use a custom MySQL configuration file
-      - ./config:/etc/mysql/conf.d
-    command:
-      [--character-set-server=utf8mb4, --collation-server=utf8mb4_unicode_ci]
-    networks:
-      - compose_network
 
   # image: codesanook-ef-note:latest which is a custom image. It is advanced topic, put more detail in README.md
   web:
@@ -43,7 +11,7 @@ services:
     image: codesanook-ef-note:latest
     container_name: ${COMPOSE_PROJECT_NAME:?err}_web
     environment:
-      ConnectionStrings__DefaultConnection: Server=db; Database=ef-note; Uid=sa; Pwd=12345Abc%; CharSet=utf8mb4;
+      ConnectionStrings__DefaultConnection: Server=mssql, 1434;Database=ef-note;User Id=sa;Password=12345Abc%;TrustServerCertificate=True;
       # https://www.npgsql.org/doc/connection-string-parameters.html
       ASPNETCORE_URLS: http://0.0.0.0:8000 # A server will be reachable with any IPs a specific port number.
       DOTNET_WATCH_SUPPRESS_LAUNCH_BROWSE: 1 # We can't lanuch a browser inside a Docker container for dotnet watch run
@@ -53,20 +21,20 @@ services:
       - ./src/Codesanook.EFNote:/app # ./src/Codesanook.EFNote on a local host is mapped to /app in the container
     networks:
       - compose_network
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#environment
 
   mssql:
     build:
       context: .
-      dockerfile: Dockerfile.mssql # Use custom image
-    image: ${COMPOSE_PROJECT_NAME:?err}_mssql
-    container_name: ${COMPOSE_PROJECT_NAME:?err}_mssql
+      dockerfile: Dockerfile.mssql
+    image: ${COMPOSE_PROJECT_NAME:?err}-mssql-2019
+    container_name: ${COMPOSE_PROJECT_NAME:?err}_db
     ports:
       - 1444:1433
     volumes:
       - mssql_data:/var/opt/mssql/data
       - mssql_log:/var/opt/mssql/log
       - mssql_backup:/var/opt/mssql/backup
-
     # https://docs.docker.com/compose/compose-file/compose-file-v3/#environment
     environment:
       # List of all SQL Server environment variables:
@@ -74,21 +42,13 @@ services:
       - ACCEPT_EULA=Y
       - MSSQL_PID=Express
       - MSSQL_SA_PASSWORD=12345Abc%
-
       - MSSQL_DATA_DIR=/var/opt/mssql/data
       - MSSQL_LOG_DIR=/var/opt/mssql/log
       - MSSQL_BACKUP_DIR=/var/opt/mssql/backup
 
-    networks:
-      - compose_network
-
 # Create name volumes managed by Docker to not lose data when remove a container
 # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
 volumes:
-  # For MySQL
-  mysql-data:
-  mysql-logs:
-
   # For SQL Server
   mssql_data:
   mssql_log:

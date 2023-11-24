@@ -85,7 +85,6 @@ namespace Codesanook.EFNote.Migrations
                     title = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
                     content = table.Column<string>(type: "nvarchar(1024)", maxLength: 1024, nullable: false),
                     createdutc = table.Column<DateTime>(name: "created_utc", type: "datetime2", nullable: false),
-                    updatedutc = table.Column<DateTime>(name: "updated_utc", type: "datetime2", nullable: true),
                     isdeleted = table.Column<bool>(name: "is_deleted", type: "bit", nullable: false),
                     viewcount = table.Column<int>(name: "view_count", type: "int", nullable: false),
                     notebookid = table.Column<int>(name: "notebook_id", type: "int", nullable: false)

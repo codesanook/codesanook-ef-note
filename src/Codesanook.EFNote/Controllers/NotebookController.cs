@@ -17,7 +17,7 @@ namespace Codesanook.EFNote.Controllers
         public async Task<IActionResult> IndexAsync()
         {
             var notebook = await dbContext.Notebooks
-                .Where(n => n.Metadata.Color == "#F00")
+                .Where(n => n.Settings.ColorTheme == "#F00")
                 .ToListAsync();
 
             var notebooks = await dbContext.Notebooks
@@ -64,8 +64,8 @@ namespace Codesanook.EFNote.Controllers
         [HttpPost]
         public async Task<IActionResult> EditAsync(int id, Notebook notebook)
         {
-             // ExecuteUpdate fails when target entity has an owned entity #28727
-             // https://github.com/dotnet/efcore/issues/28727
+            // ExecuteUpdate fails when target entity has an owned entity #28727
+            // https://github.com/dotnet/efcore/issues/28727
             var existingNotebook = await dbContext.Notebooks.FindAsync(id);
             existingNotebook.Name = notebook.Name.Trim();
 

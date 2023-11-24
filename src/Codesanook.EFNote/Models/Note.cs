@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +17,9 @@ namespace Codesanook.EFNote.Models
 
         // [DatabaseGenerated(DatabaseGeneratedOption.Computed)] does not work now for MS SQL 2016 + EF Core 6
         public DateTime CreatedUtc { get; set; }
-        public DateTime? UpdatedUtc { get; set; }
+
+        [NotMapped]
+        public List<DateTime>? UtcUpdates { get; set; }
         public bool IsDeleted { get; set; }
         public int ViewCount { get; set; }
 
@@ -33,7 +36,8 @@ namespace Codesanook.EFNote.Models
                     $"{nameof(Title)}: {Title}",
                     $"{nameof(Content)}: {Content}",
                     $"{nameof(CreatedUtc)}: {CreatedUtc}",
-                    $"{nameof(UpdatedUtc)}: {UpdatedUtc}",
+                    $"{nameof(UtcUpdates)}:",
+                    $"{string.Join("\n", UtcUpdates ?? new List<DateTime>())}:",
                     $"{nameof(ViewCount)}: {ViewCount}",
                     $"{nameof(NotebookId)}: {NotebookId}",
 
